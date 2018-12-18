@@ -3,9 +3,7 @@
 #' @param sandboxCon socket connection to original R session
 receiveSand<-function(sandboxCon){
   primer <- recieveMessage(sandboxCon)
-  print("recieved Primer")
   ss <- recieveMessage(sandboxCon,maxlen = as.character(primer))
-  print("recieved object")
   stringToObject(ss)
 }
 

@@ -27,11 +27,11 @@ test_that("Objects in current environment will not be overwritten by sandbox", {
 
 test_that("libraries loaded in the sandbox remain there", {
 
-  if("ggplot2"%in%installed.packages()[,'Package']){
+  if("tidyverse"%in%installed.packages()[,'Package']){
     sandbox({
-      library(ggplot2)
+      library(tidyverse)
     })
-    testthat::expect_false("ggplot2"%in%loadedNamespaces())
+    testthat::expect_false("tidyverse"%in%loadedNamespaces())
   }
 
 })
@@ -42,25 +42,21 @@ test_that("Sandbox only returns printed outputs", {
     donotreturn<-4
     print(92)
     })
-  testthat::expect_false("ggplot2"%in%loadedNamespaces())
+
+  output<-capture.output(sbOutput)
+  testthat::expect_identical(output,"[1] 92")
 })
 
-
-test_that("Sandbox returns plot object correctly", {
-  sbOutput<-sandbox({
-    library(ggplot2)
-    ggplot()+
-      geom_point(aes(x=c(1,2,3,4),
-                     y=c(4,2,6,8)))
-  })
-
-  ggplot2::ggplot()+
-    ggplot2::geom_point(ggplot2::aes(x=c(1,2,3,4),
-                   y=c(4,2,6,8)))
-
-  testOutput<-recordPlot()
-
-  testthat::expect_e(sbOutput[[1]],testOutput)
-})
+# #need to find a way to diff plot outputs
+# test_that("Sandbox returns plot object correctly", {
+#   sbOutput<-sandbox({
+#     library(ggplot2)
+#     ggplot()+
+#       geom_point(aes(x=c(1,2,3,4),
+#                      y=c(4,2,6,8)))
+#   })
+#
+#   testthat::expect_equal_to_reference(sbOutput,"sandbox_plotTest.rda",update = FALSE)
+# })
 
 

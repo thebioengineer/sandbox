@@ -25,7 +25,7 @@ sandbox<-function(x){
 
   output<-receiveSand(sandboxCon)
 
-  write.socket(con,"complete")
+  write.socket(sandboxCon,"complete")
   # eval(body(),envir = new.env(parent=baseenv()))
 
   class(output)<-"sandbox.output"

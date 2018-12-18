@@ -27,8 +27,7 @@ returnSand<-function(sandboxCon,results){
 #' keep socket connection open until original session confirms it has recieved all outputs
 #' @param socketCon socket connection to original R session
 closeSandbox<-function(sandboxCon){
-  print("listening for recipt confirmation")
-  repeat({
+   repeat({
     message<-read.socket(sandboxCon)
     if(message=="complete"){
       break
