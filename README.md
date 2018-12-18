@@ -40,4 +40,4 @@ ls()
 
     ## [1] FALSE
 
-This is just the beginning, with future work to allow the export of specific objects from the environments, logging, etc
+This is just the beginning, with future work to allow the export of specific objects either into the sandbox or out, logging, etc
