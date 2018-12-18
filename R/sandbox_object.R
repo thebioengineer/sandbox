@@ -1,0 +1,9 @@
+print.sandbox.output<-function(x){
+  lapply(x,function(y){
+    if(is.character(y)){
+      cat(y)
+    }else{
+        print(y)
+    }
+  })
+}

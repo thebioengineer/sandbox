@@ -6,15 +6,6 @@ makeSandbox<-function(ID){
   return(socketCon)
 }
 
-#' Get code to evaluate from original R Session
-#' @param sandboxCon socket connection to original R session
-receiveSand<-function(sandboxCon){
-  primer <- read.socket(sandboxCon)
-  print("recieved Primer")
-  ss <- read.socket(sandboxCon,maxlen = as.character(primer))
-  print("recieved object")
-  stringToObject(ss)
-}
 
 #' Evaluate code from original R Session
 #' @import evaluate
@@ -28,10 +19,7 @@ castSand<-function(mold){
 #' @param sandboxCon socket connection to original R session
 #' @param results results from evaluated code
 returnSand<-function(sandboxCon,results){
-  cat("here2",file="C:/Users/ehhughes/Documents/VISC_Packages/sandbox/test123.txt",append = TRUE)
   sendSand(results,sandboxCon)
-  cat("here3",file="C:/Users/ehhughes/Documents/VISC_Packages/sandbox/test123.txt",append=TRUE)
-
 }
 
 #' Quit from sandboxed R session
@@ -39,7 +27,15 @@ returnSand<-function(sandboxCon,results){
 #' keep socket connection open until original session confirms it has recieved all outputs
 #' @param socketCon socket connection to original R session
 closeSandbox<-function(sandboxCon){
-  recievedConfirmation<-read.socket(sandboxCon)
+  print("listening for recipt confirmation")
+  repeat({
+    message<-read.socket(sandboxCon)
+    if(message=="complete"){
+      break
+    }else{
+      write.socket(sandboxCon,message)
+    }
+  })
   # q(save='no')
 }
 
@@ -58,10 +54,6 @@ evaluateSandbox<-function(ID){
   on.exit(close.socket(con))
   sand<-receiveSand(con)
   mold<-castSand(sand)
-  cat("here1",file="C:/Users/ehhughes/Documents/VISC_Packages/sandbox/test123.txt")
   returnSand(con,mold)
-  cat("here5",file="C:/Users/ehhughes/Documents/VISC_Packages/sandbox/test123.txt",append=TRUE)
   closeSandbox(con)
-  cat("here20",file="C:/Users/ehhughes/Documents/VISC_Packages/sandbox/test123.txt",append=TRUE)
-
 }

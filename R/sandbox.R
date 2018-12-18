@@ -23,14 +23,13 @@ sandbox<-function(x){
   # run new code
   sendSand(body,sandboxCon)
 
-  print('here4')
-
   output<-receiveSand(sandboxCon)
 
-  print('here5')
-
-
+  write.socket(con,"complete")
   # eval(body(),envir = new.env(parent=baseenv()))
+
+  class(output)<-"sandbox.output"
+
   return(output)
   # return(body)
 }
@@ -44,13 +43,7 @@ sandboxSession<-function(){
   # and waits for the connection. the order matters, which is why
   # the system call is first, prevents locking
   system(paste0("R --vanilla --slave -e library(sandbox);sandbox:::evaluateSandbox(",ID,") &"),wait=FALSE)
-
-  paste("making Socket")
-
   con <- make.socket("localhost", ID)
-
-  paste("returning Socket")
-
   return(con)
 }
 
@@ -59,9 +52,4 @@ destroySandbox<-function(sandboxCon){
     close.socket(sandboxCon)
 }
 
-sendSand<-function(expr,sandboxCon){
-  serObject<-objectToString(expr)
-  write.socket(sandboxCon,as.character(stri_numbytes(serObject)))
-  write.socket(sandboxCon,serObject)
-}
 

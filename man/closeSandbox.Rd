@@ -10,5 +10,5 @@ closeSandbox(sandboxCon)
 \item{socketCon}{socket connection to original R session}
 }
 \description{
-Quit from sandboxed R session
+keep socket connection open until original session confirms it has recieved all outputs
 }
