@@ -19,7 +19,7 @@ sandbox({
 })
 ```
 
-![](sandbox_files/figure-markdown_github/sandbox-1.png)
+![](inst/sandbox_files/figure-markdown_github/sandbox-1.png)
 
     ## [[1]]
     ## 
