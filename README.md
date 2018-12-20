@@ -33,7 +33,7 @@ sandbox({
 })
 ```
 
-![](sandbox_files/figure-markdown_github/sandbox-1.png)
+![](inst/sandbox_files/figure-markdown_github/sandbox-1.png)
 
     ## # A tibble: 11 x 6
     ## # Groups:   carat_binned [11]
