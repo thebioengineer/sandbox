@@ -14,22 +14,27 @@ test_that("objects only exist in sandbox", {
 
 test_that("Objects in current environment will not be overwritten by sandbox", {
 
-  testVal<-42
+  testVal<-"test"
+  testVal2<-42
 
   sandbox({
-    testVal<-1
+    testVal <- 1
+    testVal2 <- 1
   })
 
-  testthat::expect_equal(testVal,42) #object should still be 42
+  testthat::expect_equal(testVal,"test") #object should still be "test"
+  testthat::expect_equal(testVal2,42) #object should still be "test"
+
 
 })
 
 
 test_that("libraries loaded in the sandbox remain there", {
 
-  if("tidyverse"%in%installed.packages()[,'Package']){
+  if("MASS"%in%installed.packages()[,'Package'] &
+     !"MASS"%in%loadedNamespaces() ){
     sandbox({
-      library(tidyverse)
+      library(MASS)
     })
     testthat::expect_false("tidyverse"%in%loadedNamespaces())
   }
@@ -37,13 +42,12 @@ test_that("libraries loaded in the sandbox remain there", {
 })
 
 
-test_that("Sandbox only returns printed outputs", {
-  sbOutput<-sandbox({
+test_that("Sandbox only returns printed value", {
+  output<-capture.output(sandbox({
     donotreturn<-4
     print(92)
-    })
+    }))
 
-  output<-capture.output(sbOutput)
   testthat::expect_identical(output,"[1] 92")
 })
 

@@ -3,10 +3,10 @@ title: "sandbox R"
 subtitle: separate runtime environments within R
 author: Ellis Hughes
 output:
-  html_document:
-    df_print: paged
   github_document:
     html_preview: false
+  html_document:
+    df_print: paged
 ---
 
 This is an example of running your code within a sandbox. write your code as normal, but wrap it within a "sandbox" function. Your code will now be evaluated within its own R session, and outputs will be returned to your console.
@@ -24,6 +24,12 @@ sandbox({
   
   ggplot(diamonds, aes(x=carat, y=price)) + geom_point()
   
+  diamonds%>%
+    mutate(carat_binned=cut(carat, c(0,.5,.9,1,1.5,1.9,2,2.5,3,4,5,6)))%>%
+    group_by(carat_binned,cut)%>%
+    summarize(avgPrice=mean(price))%>%
+    spread(cut,avgPrice)
+  
 })
 
 ```
@@ -37,4 +43,32 @@ ls()
 
 ```
 
-This is just the beginning, with future work to allow the export of specific objects from the environments, logging, etc
+
+You can also now 'leak' objects out of the sandbox environment into your own. This may be useful if you only want the side effects of running or the end result of an analysis that may be dirty if multiple libraries are used. For example, if you had your own version of a function, you can safely run your code in the sandbox and still expect a save environment outside.
+
+```{r importObject_sb}
+
+sandbox({
+
+  #weird function overwriting a normally used function. In this case, transposing a data.frame
+  data.frame<-function(...){
+    base::data.frame(t(base::data.frame(...)))
+  }
+
+  transposedDataFrame<-data.frame(c(1,2,3),c(4,5,6))
+  
+  leak(transposedDataFrame)
+})
+```
+
+The result is that now 'transposedDataFrame' is in the environment for access, and we still have a normal data.frame function!
+
+```{r print_importObjectResults}
+transposedDataFrame
+
+data.frame
+
+
+```
+
+This is just the beginning, with future work to allow the import of specific objects to the sandbox session, logging, etc

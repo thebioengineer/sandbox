@@ -1,14 +1,14 @@
 Package: sandbox
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Sandbox R code into another R Session
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Ellis Hughes [aut,cre]
+Maintainer: Ellis Hughes <ellishughes@live.com>
+Description:Run your R code in another "sandbox" R environment and capture the outputs. You can also 'leak' objects that were generated in your sandbox environment to the current environment
+License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 Suggests: 
     testthat
+Depends: Unicode,evaluate,stringi

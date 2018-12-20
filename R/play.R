@@ -11,8 +11,10 @@ makeSandbox<-function(ID){
 #' @import evaluate
 #' @param mold code supplied to sandbox R session to evaluate, contained in a function call
 castSand<-function(mold){
+  leakEnv<-createleak()
   results<-evaluate(mold,stop_on_error = 1)
-  results[which(sapply(results,function(x)!inherits(x,"source")))] #return only results/error
+  list(outputs=results[which(sapply(results,function(x)!inherits(x,"source")))], #return only results/error
+       leak=leakEnv)
 }
 
 #' Return outputs to original R Session - wrapper for sendSand

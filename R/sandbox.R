@@ -10,10 +10,10 @@
 #'   print(testVar)
 #' })
 #' }
-sandbox<-function(x){
+sandbox<-function(x,env=parent.frame()){
 
-  # convert expression to function to be sent to new env
-  expr <- eval(substitute(substitute(x)), parent.frame())
+  # convert expression to function to be sent to sandbox session
+  expr <- eval(substitute(substitute(x)))
   body<-eval(call("function",NULL,expr))
 
   # generate new R session to run sandboxed code in
@@ -23,15 +23,16 @@ sandbox<-function(x){
   # run new code
   sendSand(body,sandboxCon)
 
+  # capture outputs
   output<-receiveSand(sandboxCon)
 
+  #inform sandbox session to close
   write.socket(sandboxCon,"complete")
-  # eval(body(),envir = new.env(parent=baseenv()))
 
   class(output)<-"sandbox.output"
 
-  return(output)
-  # return(body)
+  print(output,env)
+  invisible(output)
 }
 
 # #Results to return from sandbox

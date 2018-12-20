@@ -4,7 +4,7 @@
 \alias{sandbox}
 \title{Run expression in a sandboxed environment and return outputs}
 \usage{
-sandbox(x)
+sandbox(x, env = parent.frame())
 }
 \description{
 Run expression in a sandboxed environment and return outputs
