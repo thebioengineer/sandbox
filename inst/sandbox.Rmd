@@ -43,7 +43,7 @@ ls()
 
 ```
 
-
+##Leaking 
 You can also now 'leak' objects out of the sandbox environment into your own. This may be useful if you only want the side effects of running or the end result of an analysis that may be dirty if multiple libraries are used. For example, if you had your own version of a function, you can safely run your code in the sandbox and still expect a save environment outside.
 
 ```{r importObject_sb}
@@ -66,7 +66,7 @@ The result is that now 'transposedDataFrame' is in the environment for access, a
 ```{r print_importObjectResults}
 transposedDataFrame
 
-data.frame
+head(data.frame)
 
 
 ```
