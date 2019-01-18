@@ -9,10 +9,8 @@
 #' @export
 #' @examples
 #' sandbox({
-#'   library(tidyverse)
 #'   testval<-22
 #'   print(testval)
-#'   print(testVar)
 #' })
 sandbox<-function(x,host="localhost",env=parent.frame()){
 

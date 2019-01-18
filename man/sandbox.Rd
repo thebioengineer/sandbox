@@ -18,9 +18,7 @@ Run expression in a sandboxed environment and return outputs
 }
 \examples{
 sandbox({
-  library(tidyverse)
   testval<-22
   print(testval)
-  print(testVar)
 })
 }
