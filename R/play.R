@@ -2,7 +2,9 @@
 #' @param ID the port ID to open socket on
 #' @import utils
 makeSandbox<-function(ID){
-  socketCon <- make.socket("localhost", port=ID, server=TRUE)
+  # socketCon <- make.socket("localhost", port=ID, server=TRUE)
+  socketCon<-socketConnection("localhost", port = ID, blocking = TRUE,
+                   open = "a+b", timeout = 60 * 60 * 24 * 30)
   return(socketCon)
 }
 
@@ -13,8 +15,7 @@ makeSandbox<-function(ID){
 castSand<-function(mold){
   leakEnv<-createleak()
   results<-evaluate(mold,stop_on_error = 1)
-  list(outputs=results[which(sapply(results,function(x)!inherits(x,"source")))], #return only results/error
-       leak=leakEnv)
+  newSandboxOutput(results,leakEnv)
 }
 
 #' Return outputs to original R Session - wrapper for sendSand
@@ -30,11 +31,11 @@ returnSand<-function(sandboxCon,results){
 #' @param socketCon socket connection to original R session
 closeSandbox<-function(sandboxCon){
    repeat({
-    message<-read.socket(sandboxCon)
+    message<-unserialize(sandboxCon)
     if(message=="complete"){
       break
     }else{
-      write.socket(sandboxCon,message)
+      serialize(message,sandboxCon)
     }
   })
   # q(save='no')
@@ -46,13 +47,23 @@ closeSandbox<-function(sandboxCon){
 #' @param ID the port ID to open socket on
 evaluateSandbox<-function(ID){
 
+  retryDelay <- 0.1     # 0.1 second initial delay before retrying
+  retryScale <- 1.5     # 50% increase of delay at each retry
+  setup_timeout <- 120  # retry setup for 2 minutes before failing
+  t0 <- Sys.time()
+  writeLines("starting connection\n","C:/Users/ehhughes/Documents/Projects/sandbox.log")
   repeat({
     con<-try(makeSandbox(ID))
     if(!inherits(con,'try-error')){
       break
     }
+    if (Sys.time() - t0 > setup_timeout){
+      q(save = "no")
+      }
+    Sys.sleep(retryDelay)
+    retryDelay <- retryScale * retryDelay
   })
-  on.exit(close.socket(con))
+  on.exit(close.connection(con))
   sand<-receiveSand(con)
   mold<-castSand(sand)
   returnSand(con,mold)
