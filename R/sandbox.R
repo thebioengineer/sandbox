@@ -31,14 +31,14 @@ sandbox<-function(x,env=parent.frame()){
 
   class(output)<-"sandbox.output"
 
-  # print(output,env)
+  print(output,env)
   invisible(output)
 }
 
 # #Results to return from sandbox
 
 sandboxSession<-function(){
-  ID<-sample(1000:1079,1)
+  ID<-sample(10000:10100,1)
 
   # These two lines need to execute soon one after another. The new R session initializes the socket connection,
   # and waits for the connection. the order matters, which is why

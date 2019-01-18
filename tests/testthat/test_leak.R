@@ -1,5 +1,4 @@
 context("Returning Objects From Sandbox")
-library(sandbox)
 
 test_that("objects are written to leakEnv by leak", {
   wrapper<-function(){
@@ -34,7 +33,7 @@ test_that("objects are returned from sandbox environment", {
   on.exit({sandbox:::destroySandbox(sandboxCon)})
   sandbox:::sendSand(wrapper3,sandboxCon)
   output<-sandbox:::receiveSand(sandboxCon)
-  write.socket(sandboxCon,"complete")
+  serialize("complete",sandboxCon)
 
   testthat::expect_equal(ls(output[['leak']]),"testVal1") #object should not exist
 })

@@ -1,5 +1,4 @@
 context("Ensure Sandboxing")
-library(sandbox)
 
 test_that("objects only exist in sandbox", {
   sandbox({
