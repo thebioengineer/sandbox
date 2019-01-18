@@ -28,12 +28,23 @@ test_that("object cleans list of source values", {
 })
 
 
-test_that("object cleans list of source values", {
+test_that("object stores outputs in 'outputs' slot", {
   
   evalOutput<-evaluate::evaluate({inVal<-42;print(inVal)})
   
   sbo<-sandbox:::newSandboxOutput(evalOutput,new.env())
   expect_identical(identical(sbo$outputs,evalOutput),FALSE)
   expect_identical(sbo$outputs,evalOutput[which(sapply(evalOutput,function(x)!inherits(x,"source")))])
+  
+})
+
+test_that("object stores source call in 'source' slot", {
+  
+  expr<-function(){inVal<-42;print(inVal)}
+  
+  evalOutput<-evaluate::evaluate(expr)
+  
+  sbo<-sandbox:::newSandboxOutput(evalOutput,new.env())
+  expect_equivalent(sbo$source,expr)
   
 })

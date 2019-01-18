@@ -1,12 +1,17 @@
 
-newSandboxOutput<-function(results,leakEnv,call){
+newSandboxOutput<-function(results,leakEnv){
   
-  results<-results[which(sapply(results,function(x)!inherits(x,"source")))]
+  sourceCode<-sapply(results,function(x)inherits(x,"source"))
+  
+  source<-createSource(results[sourceCode])
+  outputs<-results[!sourceCode]
   metadata<-sessionInfo()
   
+  
   structure(
-    list(outputs=results, #return only results/error
+    list(outputs=outputs, #return only results/error
          leak=leakEnv,
+         source=source,
          metadata=metadata),
     class = "sandbox_output")
   
@@ -36,4 +41,12 @@ print.sandbox_output<-function(x,...,env=parent.frame()){
   })
 }
 
+
+#` convert character vectors into an actual call
+createSource<-function(x){
+  x<-unlist(lapply(x,`[[`,1))
+  expression_x<-parse(text = paste0("{",paste(x,collapse=""),"}"))[[1]]
+  func_x<-eval(call("function",NULL,expression_x))
+  return(func_x)
+}
 
