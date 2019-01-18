@@ -2,20 +2,25 @@
 % Please edit documentation in R/sandbox.R
 \name{sandbox}
 \alias{sandbox}
-\title{Run expression in a sandboxed environment and return outputs}
+\title{Sandbox code into another R session}
 \usage{
-sandbox(x, env = parent.frame())
+sandbox(x, host = "localhost", env = parent.frame())
+}
+\arguments{
+\item{x}{an expression to be exectuted in the sandbox environment}
+
+\item{host}{Where to evaluate the code. assumed to be 'localhost'}
+
+\item{env}{envionment that the leaked objects are to be assigned to. Assumes [global.env()]}
 }
 \description{
 Run expression in a sandboxed environment and return outputs
 }
 \examples{
-\dontrun{
 sandbox({
   library(tidyverse)
   testval<-22
   print(testval)
   print(testVar)
 })
-}
 }

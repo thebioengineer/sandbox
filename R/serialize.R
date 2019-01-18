@@ -39,21 +39,10 @@ stringToObject<-function(string){
   #Convert Chars to Raws, making sure to put in the empty raws --------------
   CompressedemptyRaws<-tmpCompressedObject!=""
 
-  nonProperUTF8Index<-stri_startswith_fixed(tmpCompressedObject,"<") & stri_endswith_fixed(tmpCompressedObject,">")
-  if(any(nonProperUTF8Index)){
-    nonProperUTF8<-tmpCompressedObject[which(nonProperUTF8Index)]
-    nonProperUTF8<-gsub("<","",gsub(">","",nonProperUTF8))
-    nonProperUTF8<-do.call('c',lapply(1:length(nonProperUTF8),function(index,nonProperUTF8){intToUtf8(as.u_char(nonProperUTF8[index]))},nonProperUTF8))
-    tmpCompressedObject[which(nonProperUTF8Index)]<-nonProperUTF8
-  }
-
   CompressedNonEmptyRaws<-stri_enc_toutf8(stri_join(tmpCompressedObject[CompressedemptyRaws],collapse=""))
   CompressedNonEmptyRaws_char<-charToRaw(CompressedNonEmptyRaws)
   if(length(CompressedNonEmptyRaws_char)!=sum(CompressedemptyRaws)){
     CompressedNonEmptyRaws_char<-charToRaw(stri_enc_tonative(CompressedNonEmptyRaws))
-  }
-  if(length(CompressedNonEmptyRaws_char)!=sum(CompressedemptyRaws)){
-    CompressedNonEmptyRaws_char<-charToRaw(iconv(CompressedNonEmptyRaws,"UTF-8","l1"))
   }
 
   CompressedrawVector <- raw(length(tmpCompressedObject))

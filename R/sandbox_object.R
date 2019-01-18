@@ -1,8 +1,14 @@
 
-newSandboxOutput<-function(results,leakEnv){
+newSandboxOutput<-function(results,leakEnv,call){
+  
+  results<-results[which(sapply(results,function(x)!inherits(x,"source")))]
+  metadata<-sessionInfo()
+  
   structure(
-    list(outputs=results[which(sapply(results,function(x)!inherits(x,"source")))], #return only results/error
-         leak=leakEnv), class = "sandbox.output")
+    list(outputs=results, #return only results/error
+         leak=leakEnv,
+         metadata=metadata),
+    class = "sandbox_output")
   
 }
 
@@ -10,8 +16,10 @@ newSandboxOutput<-function(results,leakEnv){
 #'
 
 #' @param x sandbox.output to be printed
+#' @param env environment to assign leaked objects to
+#' @param ... additional arguments passed to print
 #' @export
-print.sandbox.output<-function(x,env=parent.frame()){
+print.sandbox_output<-function(x,...,env=parent.frame()){
 
   #send leaked objects to global env
   lapply(ls(x[['leak']]),function(objectName){
@@ -23,7 +31,9 @@ print.sandbox.output<-function(x,env=parent.frame()){
     if(is.character(y)){
       cat(y)
     }else{
-      print(y)
+      print(y,...)
     }
   })
 }
+
+

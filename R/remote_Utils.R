@@ -1,9 +1,9 @@
 #' Generate Connection to original R Session
 #' @param ID the port ID to open socket on
 #' @import utils
-makeSandbox<-function(ID){
+makeSandbox<-function(host,ID){
   # socketCon <- make.socket("localhost", port=ID, server=TRUE)
-  socketCon<-socketConnection("localhost", port = ID, blocking = TRUE,
+  socketCon<-socketConnection(host = host, port = ID, blocking = TRUE,
                    open = "a+b", timeout = 60 * 60 * 24 * 30)
   return(socketCon)
 }
@@ -28,7 +28,7 @@ returnSand<-function(sandboxCon,results){
 #' Quit from sandboxed R session
 #'
 #' keep socket connection open until original session confirms it has recieved all outputs
-#' @param socketCon socket connection to original R session
+#' @param sandboxCon socket connection to original R session
 closeSandbox<-function(sandboxCon){
    repeat({
     message<-unserialize(sandboxCon)
@@ -38,34 +38,5 @@ closeSandbox<-function(sandboxCon){
       serialize(message,sandboxCon)
     }
   })
-  # q(save='no')
 }
 
-#' Make Sandbox Run
-#'
-#' wrapper function to assist with running in sandbox
-#' @param ID the port ID to open socket on
-evaluateSandbox<-function(ID){
-
-  retryDelay <- 0.1     # 0.1 second initial delay before retrying
-  retryScale <- 1.5     # 50% increase of delay at each retry
-  setup_timeout <- 120  # retry setup for 2 minutes before failing
-  t0 <- Sys.time()
-  writeLines("starting connection\n","C:/Users/ehhughes/Documents/Projects/sandbox.log")
-  repeat({
-    con<-try(makeSandbox(ID))
-    if(!inherits(con,'try-error')){
-      break
-    }
-    if (Sys.time() - t0 > setup_timeout){
-      q(save = "no")
-      }
-    Sys.sleep(retryDelay)
-    retryDelay <- retryScale * retryDelay
-  })
-  on.exit(close.connection(con))
-  sand<-receiveSand(con)
-  mold<-castSand(sand)
-  returnSand(con,mold)
-  closeSandbox(con)
-}
