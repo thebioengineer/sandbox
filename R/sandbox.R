@@ -29,8 +29,6 @@ sandbox<-function(x,env=parent.frame()){
   #inform sandbox session to close
   serialize("complete",sandboxCon)
 
-  class(output)<-"sandbox.output"
-
   print(output,env)
   invisible(output)
 }

@@ -15,8 +15,7 @@ makeSandbox<-function(ID){
 castSand<-function(mold){
   leakEnv<-createleak()
   results<-evaluate(mold,stop_on_error = 1)
-  list(outputs=results[which(sapply(results,function(x)!inherits(x,"source")))], #return only results/error
-       leak=leakEnv)
+  newSandboxOutput(results,leakEnv)
 }
 
 #' Return outputs to original R Session - wrapper for sendSand
