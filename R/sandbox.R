@@ -27,11 +27,11 @@ sandbox<-function(x,env=parent.frame()){
   output<-receiveSand(sandboxCon)
 
   #inform sandbox session to close
-  write.socket(sandboxCon,"complete")
+  serialize("complete",sandboxCon)
 
   class(output)<-"sandbox.output"
 
-  print(output,env)
+  # print(output,env)
   invisible(output)
 }
 
@@ -43,14 +43,19 @@ sandboxSession<-function(){
   # These two lines need to execute soon one after another. The new R session initializes the socket connection,
   # and waits for the connection. the order matters, which is why
   # the system call is first, prevents locking
-  system(paste0("R --vanilla --slave -e library(sandbox);sandbox:::evaluateSandbox(",ID,") &"),wait=FALSE)
-  con <- make.socket("localhost", ID)
+  makeExternalRSession(ID)
+  # con <- make.socket("localhost", ID)
+  con <- socketConnection(host = "localhost",
+                          port = ID,
+                          server=TRUE,
+                          blocking=TRUE,
+                          open="a+b")
   return(con)
 }
 
 destroySandbox<-function(sandboxCon){
-    write.socket(sandboxCon,'complete')
-    close.socket(sandboxCon)
+    serialize("complete",sandboxCon)
+    close.connection(sandboxCon)
 }
 
 

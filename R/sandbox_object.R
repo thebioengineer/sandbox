@@ -1,3 +1,13 @@
+
+# newSandboxOutput<-function(outputs){
+#   structure(list())
+# }
+
+#' print method for sandbox.output
+#'
+
+#' @param x sandbox.output to be printed
+#' @export
 print.sandbox.output<-function(x,env=parent.frame()){
 
   #send leaked objects to global env

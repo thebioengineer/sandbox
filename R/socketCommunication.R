@@ -2,16 +2,18 @@
 #' Get code to evaluate from original R Session
 #' @param sandboxCon socket connection to original R session
 receiveSand<-function(sandboxCon){
-  primer <- recieveMessage(sandboxCon)
-  ss <- recieveMessage(sandboxCon,maxlen = as.character(primer))
-  stringToObject(ss)
+  # primer <- recieveMessage(sandboxCon)
+  # ss <- recieveMessage(sandboxCon,maxlen = as.character(primer))
+  # stringToObject(ss)
+  unserialize(sandboxCon)
 }
 
 
 sendSand<-function(expr,sandboxCon){
-  serObject<-objectToString(expr)
-  sendMessage(sandboxCon,as.character(stri_numbytes(serObject)))
-  sendMessage(sandboxCon,serObject,maxlen = stri_numbytes(serObject))
+  # serObject<-objectToString(expr)
+  # sendMessage(sandboxCon,as.character(stri_numbytes(serObject)))
+  # sendMessage(sandboxCon,serObject,maxlen = stri_numbytes(serObject))
+  serialize(expr,sandboxCon)
 }
 
 #' fascilitate communication, send message with unique ID. wait for confirmation of recept of message with unique identifier confirmation
