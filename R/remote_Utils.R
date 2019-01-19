@@ -1,5 +1,6 @@
 #' Generate Connection to original R Session
 #' @param ID the port ID to open socket on
+#' @param host host to run R session on
 #' @import utils
 makeSandbox<-function(host,ID){
   # socketCon <- make.socket("localhost", port=ID, server=TRUE)

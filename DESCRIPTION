@@ -1,6 +1,6 @@
 Package: sandbox
 Type: Package
-Title: Sandbox R code into another R Session
+Title: Sandbox R Code into ASnother R Session
 Version: 0.1.0
 Author: Ellis Hughes [aut,cre]
 Maintainer: Ellis Hughes <ellishughes@live.com>

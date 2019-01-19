@@ -2,7 +2,7 @@
 #' 
 #' Run expression in a sandboxed environment and return outputs
 #' 
-#' @param x an expression to be exectuted in the sandbox environment
+#' @param x an expression to be exectuted, or file name of script, in the sandbox environment
 #' @param host Where to evaluate the code. assumed to be 'localhost'
 #' @param env envionment that the leaked objects are to be assigned to. Assumes [global.env()]
 #'  
@@ -14,16 +14,15 @@
 #' })
 sandbox<-function(x,host="localhost",env=parent.frame()){
 
-  # convert expression to function to be sent to sandbox session
-  expr <- eval(substitute(substitute(x)))
-  body<-eval(call("function",NULL,expr))
+  # convert input to function to be sent to sandbox session
+  toEval<-functionalizeInput(substitute(x))
 
   # generate new R session to run sandboxed code in
   sandboxCon<-sandboxSession(host)
   on.exit({destroySandbox(sandboxCon)})
 
   # run new code
-  sendSand(body,sandboxCon)
+  sendSand(toEval,sandboxCon)
 
   # capture outputs
   output<-receiveSand(sandboxCon)
@@ -40,7 +39,8 @@ sandbox<-function(x,host="localhost",env=parent.frame()){
 sandboxSession<-function(host='localhost'){
   ID<-sample(10000:10100,1)
 
-  # These two lines need to execute soon one after another. The new R session initializes the socket connection,
+  # These two lines need to execute soon one after another. The new R session
+  # initializes the socket connection,
   # and waits for the connection. the order matters, which is why
   # the system call is first, prevents locking
   makeExternalRSession(host,ID)
