@@ -30,18 +30,18 @@ sandbox<-function(x,host="localhost",env=parent.frame()){
   #inform sandbox session to close
   serialize("complete",sandboxCon)
 
-  print(output,env=env)
-  invisible(output)
+  captureLeakedObjects(output,env)
+  return(output)
 }
 
 # #Results to return from sandbox
 
 sandboxSession<-function(host='localhost'){
-  ID<-sample(10000:10100,1)
+  ID<-getPort()
 
   # These two lines need to execute soon one after another. The new R session
   # initializes the socket connection,
-  # and waits for the connection. the order matters, which is why
+  # and waits for the connection. The order matters, which is why
   # the system call is first, prevents locking
   makeExternalRSession(host,ID)
   # con <- make.socket(host, ID)
@@ -58,4 +58,7 @@ destroySandbox<-function(sandboxCon){
     close.connection(sandboxCon)
 }
 
-
+getPort<-function(){
+  port<-sample(20000:20200,1)
+  return(port)
+}

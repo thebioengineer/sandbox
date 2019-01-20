@@ -7,6 +7,8 @@
 makeSandbox(host, ID)
 }
 \arguments{
+\item{host}{host to run R session on}
+
 \item{ID}{the port ID to open socket on}
 }
 \description{

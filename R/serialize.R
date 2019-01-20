@@ -2,7 +2,6 @@
 #'
 #' @param object The object to be serialized
 #'
-#' @import Unicode
 #' @import stringi
 #'
 #' @return serialized object string
@@ -23,7 +22,6 @@ objectToString<-function(object){
 #'
 #' @param string A string that once decompressed/unserialized is an object
 #'
-#' @import Unicode
 #' @import stringi
 #'
 #' @return object that was serialized
@@ -41,9 +39,6 @@ stringToObject<-function(string){
 
   CompressedNonEmptyRaws<-stri_enc_toutf8(stri_join(tmpCompressedObject[CompressedemptyRaws],collapse=""))
   CompressedNonEmptyRaws_char<-charToRaw(CompressedNonEmptyRaws)
-  if(length(CompressedNonEmptyRaws_char)!=sum(CompressedemptyRaws)){
-    CompressedNonEmptyRaws_char<-charToRaw(stri_enc_tonative(CompressedNonEmptyRaws))
-  }
 
   CompressedrawVector <- raw(length(tmpCompressedObject))
   CompressedrawVector[CompressedemptyRaws]<-CompressedNonEmptyRaws_char

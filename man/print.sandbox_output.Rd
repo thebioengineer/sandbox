@@ -4,7 +4,7 @@
 \alias{print.sandbox_output}
 \title{print method for sandbox.output}
 \usage{
-\method{print}{sandbox_output}(x, ..., env = parent.frame())
+\method{print}{sandbox_output}(x, ..., env = globalenv())
 }
 \arguments{
 \item{x}{sandbox.output to be printed}

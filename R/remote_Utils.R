@@ -1,7 +1,6 @@
 #' Generate Connection to original R Session
 #' @param ID the port ID to open socket on
 #' @param host host to run R session on
-#' @import utils
 makeSandbox<-function(host,ID){
   # socketCon <- make.socket("localhost", port=ID, server=TRUE)
   socketCon<-socketConnection(host = host, port = ID, blocking = TRUE,
@@ -14,7 +13,6 @@ makeSandbox<-function(host,ID){
 #' @import evaluate
 #' @param mold code supplied to sandbox R session to evaluate, contained in a function call
 castSand<-function(mold){
-  leakEnv<-createleak()
   results<-evaluate(mold,stop_on_error = 1)
   newSandboxOutput(results,leakEnv)
 }

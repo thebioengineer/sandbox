@@ -19,7 +19,7 @@ test_that("Printing only the 'results' entries", {
 
 test_that("object cleans list of source values", {
   
-  evalOutput<-evaluate::evaluate({inVal<-42;print(inVal)})
+  cop<-capture.output({evalOutput<-evaluate::evaluate({inVal<-42;print(inVal)})})
   
   sbo<-sandbox:::newSandboxOutput(evalOutput,new.env())
   expect_identical(identical(sbo$outputs,evalOutput),FALSE)
@@ -30,7 +30,7 @@ test_that("object cleans list of source values", {
 
 test_that("object stores outputs in 'outputs' slot", {
   
-  evalOutput<-evaluate::evaluate({inVal<-42;print(inVal)})
+  cop<-capture.output({evalOutput<-evaluate::evaluate({inVal<-42;print(inVal)})})
   
   sbo<-sandbox:::newSandboxOutput(evalOutput,new.env())
   expect_identical(identical(sbo$outputs,evalOutput),FALSE)

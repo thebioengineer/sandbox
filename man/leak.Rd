@@ -4,10 +4,12 @@
 \alias{leak}
 \title{Return object from sandbox environment}
 \usage{
-leak(x)
+leak(x, name)
 }
 \arguments{
 \item{x}{object to return from sandbox environment}
+
+\item{name}{name to export object as if alternate to the name of the input object}
 }
 \description{
 Return object from sandbox environment

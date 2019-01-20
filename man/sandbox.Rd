@@ -7,7 +7,7 @@
 sandbox(x, host = "localhost", env = parent.frame())
 }
 \arguments{
-\item{x}{an expression to be exectuted in the sandbox environment}
+\item{x}{an expression to be exectuted, or file name of script, in the sandbox environment}
 
 \item{host}{Where to evaluate the code. assumed to be 'localhost'}
 

@@ -12,4 +12,5 @@ LazyData: true
 RoxygenNote: 6.1.1
 Suggests: 
     testthat
-Depends: Unicode,evaluate,stringi
+Depends: 
+    evaluate,stringi
