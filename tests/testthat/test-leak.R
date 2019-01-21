@@ -1,4 +1,4 @@
-context("Returning Objects From Sandbox")
+context("test-leak")
 
 test_that("objects are written to leakEnv by leak", {
   wrapper<-function(){
@@ -75,17 +75,17 @@ test_that("Sandbox only returns specified outputs - Multiple Objects", {
 
 })
 
-test_that("Sandbox only returns specified outputs - plots", {
-
-  testthat::expect_false('ggReturn'%in%ls())
-
-  sandbox({
-    library(ggplot2)
-    ggReturn<-ggplot()+
-      geom_point(aes(x=1,y=1))
-    leak(ggReturn)
-  })
-
-  testthat::expect_true('ggReturn'%in%ls())
-
-})
+# test_that("Sandbox only returns specified outputs - plots", {
+# 
+#   testthat::expect_false('ggReturn'%in%ls())
+# 
+#   sandbox({
+#     library(ggplot2)
+#     ggReturn<-ggplot()+
+#       geom_point(aes(x=1,y=1))
+#     leak(ggReturn)
+#   })
+# 
+#   testthat::expect_true('ggReturn'%in%ls())
+# 
+# })
