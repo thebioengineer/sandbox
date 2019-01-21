@@ -1,6 +1,6 @@
 Package: sandbox
 Type: Package
-Title: Sandbox R Code into Another R Session
+Title: Execute R Code in a Separate R Session
 Version: 0.1.0
 Author: Ellis Hughes [aut,cre]
 Maintainer: Ellis Hughes <ellishughes@live.com>
