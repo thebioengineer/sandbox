@@ -1,6 +1,7 @@
 #' Make Sandbox Run
 #'
 #' wrapper function to assist with running in sandbox
+#' @param host the host server to execute code
 #' @param ID the port ID to open socket on
 evaluateSandbox<-function(host,ID){
   

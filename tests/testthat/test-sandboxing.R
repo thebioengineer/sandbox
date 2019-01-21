@@ -1,4 +1,4 @@
-context("Ensure Sandboxing")
+context("test-sandboxing")
 
 test_that("objects only exist in sandbox", {
   sandbox({
@@ -73,8 +73,11 @@ test_that("sandbox session will only close if 'complete' is sent", {
   serialize("complete",sandboxCon)
   returnedMessage2<-try(unserialize(sandboxCon),silent = TRUE)
 
-  testthat::expect_equal(returnedMessage,"return this message") #message returned if not "complete"
-  testthat::expect_equal(class(returnedMessage2),"try-error") #no messages to capture if completed"
+  #message returned if not "complete"
+  testthat::expect_equal(returnedMessage,"return this message") 
+  
+  #no messages to capture if completed"
+  testthat::expect_equal(class(returnedMessage2),"try-error") 
   
 })
 
@@ -111,8 +114,8 @@ test_that("sandbox session will persist for a short period of time", {
                           open="a+b",
                           timeout=5),silent = TRUE)
   
-  
-  testthat::expect_equal(class(con),c("sockconn","connection")) #able to connect even after a small delay
+  #able to connect even after a small delay
+  testthat::expect_equal(class(con),c("sockconn","connection")) 
 
   sandboxCon<-sandbox:::sandboxSession()
   on.exit({sandbox:::destroySandbox(sandboxCon)}) #ensure session closes
@@ -120,4 +123,42 @@ test_that("sandbox session will persist for a short period of time", {
   output<-sandbox:::receiveSand(sandboxCon)
   serialize("complete",sandboxCon)
   
+})
+
+
+
+test_that("Sandbox evaluates input functions properly",{ 
+  
+  output<-capture.output(sandbox({
+    set.seed(42)
+    generateDF<-function(ncols=1,nrows=1){
+      do.call('cbind',lapply(seq(1,ncols),function(x,y){runif(y)},nrows))
+    }
+    testDF <- generateDF(1,1)
+    print(testDF)
+  }))
+  
+  testthat::expect_identical(output,c("         [,1]","[1,] 0.914806"))
+})
+
+
+
+test_that("Sandbox does not import objects/functions from current session",{ 
+  
+  testFunc<-function(){
+    print("Dont Evaluate Me")
+  }
+  testObject<-42
+  
+  output1<-sandbox({
+    testFunc()
+  })
+  
+  output2<-sandbox({
+    print(testObject)
+  })
+  
+  expect_match(output1$outputs[[1]][[1]],"could not find function")
+  expect_match(output2$outputs[[1]][[1]],"object '.+' not found")
+
 })

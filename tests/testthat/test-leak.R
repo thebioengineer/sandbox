@@ -5,9 +5,10 @@ test_that("objects are written to leakEnv by leak", {
     testVal1<-1
     leak(testVal1)
   }
-  leakEnv<-createleak()
   wrapper()
-  testthat::expect_equal(ls(leakEnv),"testVal1") #object should not exist
+  leakEnv<-sandbox:::accessLeakEnv()
+  
+  testthat::expect_true("testVal1"%in%ls(leakEnv)) #object should not exist
 })
 
 test_that("objects are written to leakEnv by leak when evaluated", {
@@ -15,9 +16,10 @@ test_that("objects are written to leakEnv by leak when evaluated", {
     testVal2<-2
     leak(testVal2)
   }
-  leakEnv<-createleak()
   evaluateOutputs<-evaluate(wrapper2())
-  testthat::expect_equal(ls(leakEnv),"testVal2") #object should not exist
+  leakEnv<-sandbox:::accessLeakEnv()
+  
+  testthat::expect_true("testVal2"%in%ls(leakEnv)) #object should not exist
 })
 
 
@@ -47,6 +49,8 @@ test_that("Sandbox only returns specified outputs - numericObject", {
     leak(testValue)
     })
 
+  
+  
   testthat::expect_identical(testValue,84)
   testthat::expect_error({print(donotreturn)})
 
@@ -61,9 +65,10 @@ test_that("Sandbox only returns specified outputs - Multiple Objects", {
 
     leak(testValue)
     leak(testValue2)
-
   })
 
+  ls(pos = 1)
+  
   testthat::expect_identical(testValue,84)
   testthat::expect_identical(testValue2,55)
   testthat::expect_error({print(donotreturn)})

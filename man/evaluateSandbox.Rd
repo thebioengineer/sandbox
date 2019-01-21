@@ -7,6 +7,8 @@
 evaluateSandbox(host, ID)
 }
 \arguments{
+\item{host}{the host server to execute code}
+
 \item{ID}{the port ID to open socket on}
 }
 \description{

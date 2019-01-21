@@ -1,4 +1,5 @@
 
+#' @importFrom utils sessionInfo
 newSandboxOutput<-function(results,leakEnv){
   
   sourceCode<-sapply(results,function(x)inherits(x,"source"))
@@ -24,12 +25,10 @@ newSandboxOutput<-function(results,leakEnv){
 #' @param env environment to assign leaked objects to
 #' @param ... additional arguments passed to print
 #' @export
-print.sandbox_output<-function(x,...,env=parent.frame()){
-
-  #send leaked objects to global env
-  lapply(ls(x[['leak']]),function(objectName){
-         assign(objectName,x[['leak']][[objectName]],envir = env)
-    })
+print.sandbox_output<-function(x,...,env=globalenv()){
+  
+    #send leaked objects to global env
+  captureLeakedObjects(x,env)
 
   #print outputs
   lapply(x[["outputs"]],function(y){

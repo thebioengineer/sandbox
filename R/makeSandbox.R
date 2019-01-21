@@ -21,8 +21,8 @@ makeRSession<-function(r_exe,host,ID){
   cmd<-paste(r_exe,"--vanilla --slave",rscript)
 
   if (.Platform$OS.type == "windows") {
-    system(cmd, wait = FALSE, input = "")
+    system(cmd, wait = FALSE, input = "",ignore.stdout = TRUE,ignore.stderr = TRUE,show.output.on.console = FALSE)
   } else{
-    system(cmd, wait = FALSE)
+    system(cmd, wait = FALSE,intern = FALSE,ignore.stdout = TRUE,ignore.stderr = TRUE)
   }
 }

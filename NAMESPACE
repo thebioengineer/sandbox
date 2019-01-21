@@ -3,7 +3,6 @@
 S3method(print,sandbox_output)
 export(leak)
 export(sandbox)
-import(Unicode)
 import(evaluate)
 import(stringi)
-import(utils)
+importFrom(utils,sessionInfo)
