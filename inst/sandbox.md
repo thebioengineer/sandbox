@@ -2,7 +2,7 @@ sandbox R
 ================
 Ellis Hughes
 
-[![Build Status](https://travis-ci.org/thebioengineer/sandbox.svg?branch=master)](https://travis-ci.org/thebioengineer/sandbox)
+[![Build Status](https://travis-ci.org/thebioengineer/sandbox.svg?branch=master)](https://travis-ci.org/thebioengineer/sandbox) [![codecov](https://codecov.io/gh/thebioengineer/sandbox/branch/master/graph/badge.svg)](https://codecov.io/gh/thebioengineer/sandbox) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/thebioengineer/sandbox?branch=master&svg=true)](https://ci.appveyor.com/project/thebioengineer/sandbox)
 
 This is an example of running your code within a sandbox. write your code as normal, but wrap it within a "sandbox" function. Your code will now be evaluated within its own R session, and outputs will be returned to your console.
 
