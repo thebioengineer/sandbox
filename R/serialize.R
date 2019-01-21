@@ -39,7 +39,10 @@ stringToObject<-function(string){
 
   CompressedNonEmptyRaws<-stri_enc_toutf8(stri_join(tmpCompressedObject[CompressedemptyRaws],collapse=""))
   CompressedNonEmptyRaws_char<-charToRaw(CompressedNonEmptyRaws)
-
+  if(length(CompressedNonEmptyRaws_char)!=sum(CompressedemptyRaws)){
+    CompressedNonEmptyRaws_char<-charToRaw(stri_enc_tonative(CompressedNonEmptyRaws))
+  }
+  
   CompressedrawVector <- raw(length(tmpCompressedObject))
   CompressedrawVector[CompressedemptyRaws]<-CompressedNonEmptyRaws_char
 
