@@ -13,7 +13,7 @@ makeSandbox<-function(host,ID){
 #' @import evaluate
 #' @param mold code supplied to sandbox R session to evaluate, contained in a function call
 castSand<-function(mold){
-  results<-evaluate(mold,stop_on_error = 1)
+  results<-evaluate(mold, output_handler = sandbox_handler(), stop_on_error = 1)
   newSandboxOutput(results,leakEnv)
 }
 
