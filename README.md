@@ -2,13 +2,13 @@ sandbox R
 ================
 Ellis Hughes
 
+[![Build Status](https://travis-ci.org/thebioengineer/sandbox.svg?branch=master)](https://travis-ci.org/thebioengineer/sandbox)
+
 This is an example of running your code within a sandbox. write your code as normal, but wrap it within a "sandbox" function. Your code will now be evaluated within its own R session, and outputs will be returned to your console.
 
 ``` r
 library(sandbox)
 ```
-
-    ## Loading required package: Unicode
 
     ## Loading required package: evaluate
 
@@ -36,7 +36,6 @@ sandbox({
 ![](inst/sandbox_files/figure-markdown_github/sandbox-1.png)
 
     ## # A tibble: 11 x 6
-    ## # Groups:   carat_binned [11]
     ##    carat_binned   Fair   Good `Very Good` Premium  Ideal
     ##    <fct>         <dbl>  <dbl>       <dbl>   <dbl>  <dbl>
     ##  1 (0,0.5]       1028.   786.        766.    863.   864.
