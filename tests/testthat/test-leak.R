@@ -31,7 +31,7 @@ test_that("objects are returned from sandbox environment", {
   }
 
   # generate new R session to run sandboxed code in
-  sandboxCon<-sandbox:::sandboxSession()
+  sandboxCon<-sandbox:::sandboxSession(sandboxConnectionTemplate())
   on.exit({sandbox:::destroySandbox(sandboxCon)})
   sandbox:::sendSand(wrapper3,sandboxCon)
   output<-sandbox:::receiveSand(sandboxCon)

@@ -60,7 +60,7 @@ test_that("sandbox session will only close if 'complete' is sent", {
   }
   
   # generate new R session to run sandboxed code in
-  sandboxCon<-sandbox:::sandboxSession()
+  sandboxCon<-sandbox:::sandboxSession(sandboxConnectionTemplate())
   on.exit({sandbox:::destroySandbox(sandboxCon)}) #ensure session closes
   sandbox:::sendSand(wrapper3,sandboxCon)
   output<-sandbox:::receiveSand(sandboxCon)
@@ -104,11 +104,11 @@ test_that("sandbox session will persist for a short period of time", {
   }
   
   # generate new R session to run sandboxed code in
-  ID<-sample(10000:10100,1)
-  makeExternalRSession('localhost',ID)
+  sbTemplate<-sandboxConnectionTemplate()
+  makeExternalRSession(sbTemplate)
   Sys.sleep(1) #wait 1 second(s) to make connection
-  con <- try(socketConnection(host = 'localhost',
-                          port = ID,
+  con <- try(socketConnection(host = sbTemplate$host,
+                          port = sbTemplate$port,
                           server=TRUE,
                           blocking=TRUE,
                           open="a+b",
@@ -117,7 +117,7 @@ test_that("sandbox session will persist for a short period of time", {
   #able to connect even after a small delay
   testthat::expect_equal(class(con),c("sockconn","connection")) 
 
-  sandboxCon<-sandbox:::sandboxSession()
+  sandboxCon<-sandbox:::sandboxSession(sbTemplate)
   on.exit({sandbox:::destroySandbox(sandboxCon)}) #ensure session closes
   sandbox:::sendSand(wrapper3,sandboxCon)
   output<-sandbox:::receiveSand(sandboxCon)
