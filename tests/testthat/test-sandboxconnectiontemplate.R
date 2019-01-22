@@ -13,5 +13,5 @@ test_that("If host is not 'localhost', localnode is the node ID", {
   sbTemplate<-sandboxConnectionTemplate(host="Alternate.Host")
 
   expect_equal(sbTemplate$host,"Alternate.Host")
-  expect_equal(sbTemplate$localnode,options("Sandbox_masterNode"))
+  expect_equal(sbTemplate$localnode,getLocalIP())
 })
