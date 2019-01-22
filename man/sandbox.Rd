@@ -4,12 +4,13 @@
 \alias{sandbox}
 \title{Sandbox code into another R session}
 \usage{
-sandbox(x, host = "localhost", env = parent.frame())
+sandbox(x, sbConnection = sandboxConnectionTemplate(),
+  env = parent.frame())
 }
 \arguments{
 \item{x}{an expression to be exectuted, or file name of script, in the sandbox environment}
 
-\item{host}{Where to evaluate the code. assumed to be 'localhost'}
+\item{sbConnection}{output of the [sandboxConnectionTemplate()]}
 
 \item{env}{envionment that the leaked objects are to be assigned to. Assumes [global.env()]}
 }

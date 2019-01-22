@@ -3,6 +3,7 @@
 S3method(print,sandbox_output)
 export(leak)
 export(sandbox)
+export(sandboxConnectionTemplate)
 import(evaluate)
 import(stringi)
 importFrom(utils,sessionInfo)
