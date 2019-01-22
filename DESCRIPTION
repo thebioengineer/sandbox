@@ -16,4 +16,5 @@ Suggests:
     MASS
 Depends: 
     evaluate,
-    stringi
+    stringi,
+    ssh

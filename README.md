@@ -35,7 +35,7 @@ sandbox({
 })
 ```
 
-![](inst/sandbox_files/figure-markdown_github/sandbox-1.png)
+![](inst/README/sandbox_files/figure-markdown_github/sandbox-1.png)
 
     ## # A tibble: 11 x 6
     ##    carat_binned   Fair   Good `Very Good` Premium  Ideal

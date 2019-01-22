@@ -4,6 +4,7 @@
 #' Actual function that generates the connection with the sandbox R session
 #' 
 #' @param sbConnection the sandbox connection object
+#' @import ssh
 makeExternalRSession<-function(sbConnection){
   switch(sbConnection$host,
          "localhost"=makeExternalRSession.local(sbConnection),
@@ -36,9 +37,10 @@ makeExternalRSession.local<-function(sbConnection){
 
 }
 
+
 makeExternalRSession.ssh<-function(sbConnection){
   session <- ssh_connect(paste0(sbConnection$username,"@",sbConnection$host))
-  cmd<-paste0("Rscript --vanilla --slave -e sandbox:::externalInit\\(\\'",sbConnection$localnode,"\\',",sbConnection$port,"\\)")
+  cmd<-paste0("Rscript --vanilla --slave -e sandbox:::externalInit\\\\(\\\\'",sbConnection$localnode,"\\\\',",sbConnection$port,"\\\\)")
   ssh_exec_wait(session,cmd)
   ssh_disconnect(session)
   
