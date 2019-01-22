@@ -8,6 +8,9 @@ latex: false
 fortran: false
 r_build_args: '--no-manual'
 
+before_install:
+  - sudo apt-get install -y libssh-dev
+
 jobs:
   include:
   - r: devel
