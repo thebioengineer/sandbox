@@ -19,7 +19,7 @@ makeSandbox.local<-function(node,ID){
 makeSandbox.external<-function(node,ID){
   socketCon<-socketConnection(host = node, port = ID, blocking = TRUE,
                               open = "a+b", timeout = 60 * 60 * 24 * 30,
-                              server = TRUE)
+                              server = FALSE)
   return(socketCon)
 }
 
