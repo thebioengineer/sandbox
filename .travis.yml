@@ -15,14 +15,8 @@ matrix:
     - r: devel
     - r: 3.1
     - r: 3.4
-      warnings_are_errors: false
-
-    - stage: full
-      os: osx
-      brew_packages: libssh
-        before_install: brew upgrade libssh # temp fix for outdated travis
     - r: release
- 
+
 addons:
   apt:
     packages:
