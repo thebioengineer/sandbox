@@ -5,13 +5,14 @@ receiveSand<-function(sandboxCon){
   # primer <- recieveMessage(sandboxCon)
   # ss <- recieveMessage(sandboxCon,maxlen = as.character(primer))
   # stringToObject(ss)
-  repeat({
-    output<-try(stringToObject(unserialize(sandboxCon)),silent=TRUE)
-    if(!inherits(output,"try-error")){
-      break
-    }
-  })
-  output
+  # repeat({
+  #   output<-try(stringToObject(unserialize(sandboxCon)),silent=TRUE)
+  #   if(!inherits(output,"try-error")){
+  #     break
+  #   }
+  # })
+  # output
+  unserialize(sandboxCon)
 }
 
 #' share and send objects over sockets
@@ -22,5 +23,6 @@ sendSand<-function(expr,sandboxCon){
   # serObject<-objectToString(expr)
   # sendMessage(sandboxCon,as.character(stri_numbytes(serObject)))
   # sendMessage(sandboxCon,serObject,maxlen = stri_numbytes(serObject))
-  serialize(objectToString(expr),sandboxCon)
+  # serialize(objectToString(expr),sandboxCon)
+  serialize(expr,sandboxCon)
 }
