@@ -12,7 +12,7 @@ test_that(".onLoad sets the options properly", {
   
   sandbox:::.onLoad("testlib","testPackage")
   
-  expect_true(options("Sandbox_masterNode")[[1]]==getLocalIP())
+  expect_true(options("Sandbox_masterNode")[[1]]==Sys.info()[["nodename"]])
   expect_true(options("Sandbox_scriptdir")[[1]]==file.path("testlib","testPackage"))
   
 })

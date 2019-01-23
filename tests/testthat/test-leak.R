@@ -49,8 +49,6 @@ test_that("Sandbox only returns specified outputs - numericObject", {
     leak(testValue)
     })
 
-  
-  
   testthat::expect_identical(testValue,84)
   testthat::expect_error({print(donotreturn)})
 
