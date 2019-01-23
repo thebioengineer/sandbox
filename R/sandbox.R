@@ -50,7 +50,7 @@ sandboxSession<-function(sbConnection){
     # con <- make.socket(host, ID)
     con <- socketConnection(host = sbConnection$host,
                           port = sbConnection$port,
-                          server=isServer,
+                          server=TRUE,
                           blocking=TRUE,
                           open="a+b")
   # }else{
