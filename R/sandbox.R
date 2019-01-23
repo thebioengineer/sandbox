@@ -42,10 +42,11 @@ sandboxSession<-function(sbConnection){
   # and waits for the connection. The order matters, which is why
   # the system call is first, prevents locking
   makeExternalRSession(sbConnection)
+  isServer<-sbConnection$host==sbConnection$localnode
   # con <- make.socket(host, ID)
   con <- socketConnection(host = sbConnection$host,
                           port = sbConnection$port,
-                          server=TRUE,
+                          server=isServer,
                           blocking=TRUE,
                           open="a+b")
   return(con)

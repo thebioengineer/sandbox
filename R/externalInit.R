@@ -1,4 +1,4 @@
-externalInit<-function(localNode,port){
+externalInit<-function(localnode,port){
   # old <- options(timeout = 60 * 60 * 24 * 30)
   # on.exit(options(old))
   # library(sandbox)
@@ -7,7 +7,7 @@ externalInit<-function(localNode,port){
                 "windows"=file.path(R.home("bin"), "Rscript.exe"),
                 file.path(R.home("bin"), "Rscript"))
   
-  rscript<-file.path(options("Sandbox_scriptdir"), "start_ext_Rsession.R")
+  rscript<-file.path(options("Sandbox_scriptdir"), "start_hosted_ext_Rsession.R")
   
   cmd<-paste(r_exe,"--vanilla --slave",rscript,localnode,port)
   if (.Platform$OS.type == "windows") {

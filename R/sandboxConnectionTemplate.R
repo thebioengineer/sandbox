@@ -8,24 +8,20 @@
 sandboxConnectionTemplate<-function(host="localhost",port,username=""){
 
   
-  if(missing(port)){
-    if(host=="localhost"){
-      port<-getPort()
-    }else{
-      port<-22
-    }
-    
-  }
-  
-  if(host=="localhost"){
+  if( host=="localhost" || host == getLocalIP() ){
     localnode<-"localhost"
+    host<- "localhost"
   }else{
     localnode<-getLocalIP()
     
   }
   
   if(missing(port)){
-    port<-getPort()
+    if( host=="localhost"){
+      port<-getPort()
+    }else{
+      port<-22
+    }
   }
   
   structure(
@@ -38,7 +34,6 @@ sandboxConnectionTemplate<-function(host="localhost",port,username=""){
 
 
 getLocalIP<-function(){
-  
   switch(.Platform$OS.type,
          "windows"=ip.windows(),
          ip.unix())
@@ -52,6 +47,6 @@ ip.windows<-function(){
 
 ip.unix<-function(){
   ipconf<-system("ifconfig",intern = TRUE)
-  IP<-gsub("(.+)(inet )((\\d+[.])+(\\d+))(.*)","\\3",ipconf[grepl("IPv4 Address",ipconf)])
+  IP<-gsub("(.+)(inet )((\\d+[.])+(\\d+))(.*)","\\3",ipconf[grepl("inet ",ipconf)])
   IP[length(IP)] #last IP address is the internal IP address of the machine
 }
