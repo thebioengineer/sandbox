@@ -5,7 +5,7 @@
 #' @param username external servers username
 #'  
 #' @export
-sandboxConnectionTemplate<-function(host="localhost",port,username=""){
+sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS="unix"){
 
   
   if( host=="localhost" || host == getLocalIP() ){
@@ -28,7 +28,8 @@ sandboxConnectionTemplate<-function(host="localhost",port,username=""){
     list(host=host, #return only results/error
          username=username,
          port=port,
-         localnode=localnode),
+         localnode=localnode,
+         hostOS=hostOS),
     class = "sandboxConnection")
 }
 
