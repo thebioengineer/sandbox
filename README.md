@@ -113,4 +113,4 @@ ls()
 
 ## Other Packages
 
-While other packages, such as [callr](https://github.com/r-lib/callr), also provide similar abilities, sandbox as the unique benefit of returning all the outputs of your code - print outs, plots, even objects -  not just one output.
+While other packages, such as [callr](https://github.com/r-lib/callr), also provide similar abilities, sandbox as the unique benefit of returning all the outputs of your code - print outs, plots, even objects -  not just one output. Also, sandbox does not require using anonymous functions to pass complex workflows.
