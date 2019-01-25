@@ -5,7 +5,7 @@
 \title{Contains template information for connection to external server}
 \usage{
 sandboxConnectionTemplate(host = "localhost", port, username = "",
-  hostOS = "unix")
+  hostOS = c("unix", "windows"))
 }
 \arguments{
 \item{host}{server where  R code will be exectuted, defaults to local}
