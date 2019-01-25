@@ -3,6 +3,7 @@
 #' @param host server where  R code will be exectuted, defaults to local
 #' @param port port of the connection
 #' @param username external servers username
+#' @param hostOS the OS of the external host, unix or windows?
 #'  
 #' @export
 sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS="unix"){
