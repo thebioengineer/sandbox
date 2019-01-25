@@ -6,15 +6,12 @@
 #' @param hostOS the OS of the external host, unix or windows?
 #'  
 #' @export
-sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS="unix"){
-
-  
+sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS=c("unix","windows")){
   if( host=="localhost" || host == getLocalIP() ){
     localnode<-"localhost"
     host<- "localhost"
   }else{
     localnode<-getLocalIP()
-    
   }
   
   if(missing(port)){
@@ -24,7 +21,12 @@ sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS="un
       port<-22
     }
   }
-  
+  hostOS<-match.arg(hostOS)
+  newSandboxConnectionTemplate(host,username,port,localnode,hostOS)
+}
+
+
+newSandboxConnectionTemplate<-function(host,username,port,localnode,hostOS){
   structure(
     list(host=host, #return only results/error
          username=username,
@@ -33,7 +35,6 @@ sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS="un
          hostOS=hostOS),
     class = "sandboxConnection")
 }
-
 
 getLocalIP<-function(){
   switch(.Platform$OS.type,
