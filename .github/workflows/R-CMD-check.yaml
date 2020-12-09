@@ -59,6 +59,18 @@ jobs:
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
           writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
+        
+      - name: Install System Dependencies
+        if: runner.os == 'Linux'
+        run: |
+            sudo apt-get update && apt-get install -y --no-install-recommends \
+            docker \
+            git \
+            libxml2-dev \
+            libssl-dev \
+            && apt-get clean -y \
+            && curl -fsSL https://get.docker.com -o get-docker.sh \
+            && sh get-docker.sh
 
       - name: Cache R packages
         if: runner.os != 'Windows'
@@ -71,6 +83,7 @@ jobs:
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
+          
           while read -r cmd
           do
             eval sudo $cmd
