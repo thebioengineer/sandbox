@@ -34,11 +34,80 @@ makeExternalRSession.local<-function(sbConnection){
 
 
 makeExternalRSession.ssh<-function(sbConnection){
-  session <- ssh_connect(paste0(sbConnection$username,"@",sbConnection$host))
-
-  cmd<-paste0("Rscript --vanilla --slave -e 'sandbox:::externalInit(\"",sbConnection$localnode,"\",",sbConnection$port,")'")
   
-  ssh_exec_wait(session,cmd)
-  ssh_disconnect(session)
+  session <- ssh_connect(paste0(sbConnection$username,"@",sbConnection$host))
+  on.exit(ssh_disconnect(session))
+  
+  remote_installed_packages <- ssh_installed_packages(session,c("sandbox","remotes"))
+  
+  if("sandbox" %in% remote_installed_packages$remote_missing){
+    ssh_install_sandbox()
+  }
+  
+  sandbox_external_init <-
+    paste0(
+      "sandbox:::externalInit('",
+      sbConnection$localnode,"',",
+      sbConnection$port,
+      ")")
+
+  
+  init_res <- ssh_rscript_exec(session,sandbox_external_init)
+  
+  return(TRUE)
+  
 }
 
+std_err <- function(x){rawToChar(x$stderr)}
+std_out <- function(x){rawToChar(x$stdout)}
+
+rloc_path <- function(x){
+  normalizePath(std_out(x),winslash = "/",mustWork = FALSE)
+}
+
+ssh_rscript_exec <- function(session, expression) {
+  cmd <- paste0("RScript",
+               " -e \"",
+               expression,
+               "\"")
+  
+  ssh_exec_internal(session, cmd, error = FALSE)
+}
+
+ssh_install_sandbox <- function(session,ref = NULL, force = FALSE){
+  
+  ssh_rscript_exec(
+    session,
+    paste0(
+    "local_installed_packages <- rownames(installed.packages());",
+    "sandbox <- 'sandbox' %in% local_installed_packages;",
+    ifelse(force,"sandbox <- TRUE;",""),
+    "remotes <- 'remotes' %in% local_installed_packages;",
+    "rv <- R.version;",
+    "rdate <- paste0(rv$year,'-',rv$month,'-',rv$day);",
+    "if(remotes){",
+    "install.packages('remotes',repos = paste0('https://mran.microsoft.com/snapshot/',rdate))",
+    "};",
+    "if(sandbox){",
+    paste0("remotes::install_github('thebioengineer/sandbox",ifelse(!is.null(ref),paste0("@",ref),""),"')"),
+    "};"
+    ))
+}
+
+ssh_installed_packages <- function(session, packages){
+  
+  res <- ssh_rscript_exec(
+    session,
+    paste0(
+      "local_installed_packages <- rownames(installed.packages());",
+      "pkg_list <- c(",paste0("'",packages,"'", collapse = ","),");",
+      "cat(pkg_list[pkg_list %in% local_installed_packages])"
+    ))
+  
+  remote_installed_packages <- unlist(strsplit(std_out(res),"\\s+"))
+  
+  list(
+    remote_installed = remote_installed_packages,
+    remote_missing = setdiff(packages, remote_installed_packages)
+  )
+}

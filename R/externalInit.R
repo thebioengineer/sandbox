@@ -9,7 +9,7 @@ externalInit<-function(localnode,port){
   
   rscript<-file.path(options("Sandbox_scriptdir"), "start_hosted_ext_Rsession.R")
   
-  cmd<-paste(r_exe,"--vanilla --slave",rscript,localnode,port)
+  cmd<-paste(r_exe,"--vanilla --slave", rscript, localnode, port)
   if (.Platform$OS.type == "windows") {
     system(cmd, wait = FALSE, input = "",ignore.stdout = TRUE,ignore.stderr = TRUE,show.output.on.console = FALSE)
   } else{

@@ -27,10 +27,8 @@ sandbox<-function(x,sbConnection=sandboxConnectionTemplate(),env=parent.frame())
   # capture outputs
   output<-receiveSand(sandboxCon)
 
-  #inform sandbox session to close
-  serialize("complete",sandboxCon)
-
   captureLeakedObjects(output,env)
+  
   return(output)
 }
 
@@ -48,7 +46,7 @@ sandboxSession<-function(sbConnection){
     # con <- make.socket(host, ID)
     con <- socketConnection(host = sbConnection$host,
                           port = sbConnection$port,
-                          server=TRUE,
+                          server = ifelse(sbConnection$host == 'localhost', TRUE, FALSE),
                           blocking=TRUE,
                           open="a+b")
     

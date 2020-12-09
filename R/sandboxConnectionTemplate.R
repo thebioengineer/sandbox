@@ -7,11 +7,11 @@
 #'  
 #' @export
 sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS=c("unix","windows")){
-  if( host=="localhost" || host == getLocalIP() ){
+  if( host=="localhost" || host == getLocalNode() ){
     localnode<-"localhost"
     host<- "localhost"
   }else{
-    localnode<-getLocalIP()
+    localnode<-getLocalNode()
   }
   
   if(missing(port)){
@@ -36,20 +36,8 @@ newSandboxConnectionTemplate<-function(host,username,port,localnode,hostOS){
     class = "sandboxConnection")
 }
 
-getLocalIP<-function(){
-  switch(.Platform$OS.type,
-         "windows"=ip.windows(),
-         ip.unix())
+getLocalNode<-function(){
+  Sys.info()[['nodename']]
 }
 
-ip.windows<-function(){
-  ipconf<-system("ipconfig",intern = TRUE)
-  IP<-gsub("(.*)(\\s)((\\d+[.])+(\\d+))(.*)","\\3",ipconf[grepl("IPv4 Address",ipconf)])
-  IP[1] #first IP address is the internal IP address of the machine
-}
 
-ip.unix<-function(){
-  ipconf<-system("ifconfig",intern = TRUE)
-  IP<-gsub("(.+)(inet )((\\d+[.])+(\\d+))(.*)","\\3",ipconf[grepl("inet ",ipconf)])
-  IP[length(IP)] #last IP address is the internal IP address of the machine
-}
