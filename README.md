@@ -2,9 +2,11 @@ Sandbox
 ================
 Ellis Hughes
 
-[![Build Status](https://travis-ci.org/thebioengineer/sandbox.svg?branch=master)](https://travis-ci.org/thebioengineer/sandbox)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/thebioengineer/sandbox?branch=master&svg=true)](https://ci.appveyor.com/project/thebioengineer/sandbox)
-[![codecov](https://codecov.io/gh/thebioengineer/sandbox/branch/master/graph/badge.svg)](https://codecov.io/gh/thebioengineer/sandbox)
+<!-- badges: start -->
+[![R build status](https://github.com/thebioengineer/sandbox/workflows/R-CMD-check/badge.svg)](https://github.com/thebioengineer/sandbox/actions)
+[![Codecov test coverage](https://codecov.io/gh/thebioengineer/sandbox/branch/master/graph/badge.svg)](https://codecov.io/gh/thebioengineer/sandbox?branch=master)
+<!-- badges: end -->
+
 
 Sandbox is intended to provide a solution for reproducible research by reducing the potential for interference of a dirty environment. This is done by executing either your scripts or your provided code in a completely separate r-session.
 
