@@ -63,14 +63,8 @@ jobs:
       - name: Install System Dependencies
         if: runner.os == 'Linux'
         run: |
-            sudo apt-get update && apt-get install -y --no-install-recommends \
-            docker \
-            git \
-            libxml2-dev \
-            libssl-dev \
-            && apt-get clean -y \
-            && curl -fsSL https://get.docker.com -o get-docker.sh \
-            && sh get-docker.sh
+        
+            sudo apt-get install -y libssh-dev 
 
       - name: Cache R packages
         if: runner.os != 'Windows'
