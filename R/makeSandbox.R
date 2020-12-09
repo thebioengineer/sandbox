@@ -35,10 +35,8 @@ makeExternalRSession.local<-function(sbConnection){
 
 makeExternalRSession.ssh<-function(sbConnection){
   session <- ssh_connect(paste0(sbConnection$username,"@",sbConnection$host))
-  cmd<-paste0("Rscript --vanilla --slave -e sandbox:::externalInit\\(\\'",sbConnection$localnode,"\\',",sbConnection$port,"\\)")
-  
-  slashes<-ifelse(sbConnection$hostOS=="unix","\\\\","\\")
-  cmd<-gsub("\\\\",slashes,cmd)
+
+  cmd<-paste0("Rscript --vanilla --slave -e sandbox:::externalInit('",sbConnection$localnode,"',",sbConnection$port,")")
   
   ssh_exec_wait(session,cmd)
   ssh_disconnect(session)

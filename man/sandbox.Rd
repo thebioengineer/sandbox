@@ -4,8 +4,7 @@
 \alias{sandbox}
 \title{Sandbox code into another R session}
 \usage{
-sandbox(x, sbConnection = sandboxConnectionTemplate(),
-  env = parent.frame())
+sandbox(x, sbConnection = sandboxConnectionTemplate(), env = parent.frame())
 }
 \arguments{
 \item{x}{an expression to be exectuted, or file name of script, in the sandbox environment}
