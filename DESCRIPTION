@@ -14,7 +14,8 @@ Suggests:
     testthat,
     ggplot2,
     MASS,
-    covr
+    covr,
+    here
 Imports: 
     evaluate,
     ssh
