@@ -15,6 +15,6 @@ Suggests:
     ggplot2,
     MASS,
     covr
-Depends: 
+Imports: 
     evaluate,
     ssh
