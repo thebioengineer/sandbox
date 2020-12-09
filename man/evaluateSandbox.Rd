@@ -4,12 +4,14 @@
 \alias{evaluateSandbox}
 \title{Make Sandbox Run}
 \usage{
-evaluateSandbox(host, ID)
+evaluateSandbox(node, ID, host = "local")
 }
 \arguments{
-\item{host}{the host server to execute code}
+\item{node}{the host server to execute code}
 
 \item{ID}{the port ID to open socket on}
+
+\item{host}{location of host server, local or external}
 }
 \description{
 wrapper function to assist with running in sandbox

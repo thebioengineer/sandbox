@@ -1,9 +1,11 @@
 #' Make Sandbox Run
 #'
 #' wrapper function to assist with running in sandbox
-#' @param host the host server to execute code
+#' @param node the host server to execute code
 #' @param ID the port ID to open socket on
-evaluateSandbox<-function(host,ID){
+#' @param host location of host server, local or external
+#' 
+evaluateSandbox<-function(node,ID,host="local"){
   
   retryDelay <- 0.1     # 0.1 second initial delay before retrying
   retryScale <- 1.5     # 50% increase of delay at each retry
@@ -11,7 +13,7 @@ evaluateSandbox<-function(host,ID){
   t0 <- Sys.time()
   
   repeat({
-    con<-try(makeSandbox(host,ID))
+    con<-try(makeSandbox(node,ID,host))
     if(!inherits(con,'try-error')){
       break
     }

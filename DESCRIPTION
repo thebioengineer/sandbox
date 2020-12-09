@@ -17,4 +17,4 @@ Suggests:
     covr
 Depends: 
     evaluate,
-    stringi
+    ssh

@@ -1,6 +1,6 @@
 context("test-onload")
 
-test_that("multiplication works", {
+test_that(".onLoad sets the options properly", {
   
   nodeID<-options("Sandbox_masterNode")[[1]]
   scriptdir<-options("Sandbox_scriptdir")[[1]]

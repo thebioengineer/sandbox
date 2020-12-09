@@ -1,10 +1,25 @@
 #' Generate Connection to original R Session
+#' @param node host to run R session on
 #' @param ID the port ID to open socket on
-#' @param host host to run R session on
-makeSandbox<-function(host,ID){
-  # socketCon <- make.socket("localhost", port=ID, server=TRUE)
-  socketCon<-socketConnection(host = host, port = ID, blocking = TRUE,
+#' @param host location of host server, local or external
+#' 
+makeSandbox<-function(node,ID,host="local"){
+  switch(host,
+         "local"=makeSandbox.local(node,ID),
+         makeSandbox.external(node,ID))
+}
+
+makeSandbox.local<-function(node,ID){
+  
+  socketCon<-socketConnection(host = node, port = ID, blocking = TRUE,
                    open = "a+b", timeout = 60 * 60 * 24 * 30)
+  return(socketCon)
+}
+
+makeSandbox.external<-function(node,ID){
+  socketCon<-socketConnection(host = node, port = ID, blocking = TRUE,
+                              open = "a+b", timeout = 60 * 60 * 24 * 30,
+                              server = FALSE)
   return(socketCon)
 }
 

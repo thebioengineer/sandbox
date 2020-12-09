@@ -4,12 +4,14 @@
 \alias{makeSandbox}
 \title{Generate Connection to original R Session}
 \usage{
-makeSandbox(host, ID)
+makeSandbox(node, ID, host = "local")
 }
 \arguments{
-\item{host}{host to run R session on}
+\item{node}{host to run R session on}
 
 \item{ID}{the port ID to open socket on}
+
+\item{host}{location of host server, local or external}
 }
 \description{
 Generate Connection to original R Session
