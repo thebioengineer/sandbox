@@ -38,14 +38,12 @@ sandbox<-function(x,sbConnection=sandboxConnectionTemplate(),env=parent.frame())
 
 sandboxSession<-function(sbConnection){
   
-  isServer<-sbConnection$host==sbConnection$localnode
-  
+
   # These two lines need to execute soon one after another. 
   # first an The new R session
   # initializes the socket connection,
   # and waits for the connection. The order matters, which is why
   # the system call is first, prevents locking
-  # if(isServer){
     makeExternalRSession(sbConnection)
     # con <- make.socket(host, ID)
     con <- socketConnection(host = sbConnection$host,
@@ -53,15 +51,6 @@ sandboxSession<-function(sbConnection){
                           server=TRUE,
                           blocking=TRUE,
                           open="a+b")
-  # }else{
-  #   con <- socketConnection(host = sbConnection$host,
-  #                           port = sbConnection$port,
-  #                           server=isServer,
-  #                           blocking=TRUE,
-  #                           open="a+b")
-  #   makeExternalRSession(sbConnection)
-  #   
-  # }
     
   return(con)
 }

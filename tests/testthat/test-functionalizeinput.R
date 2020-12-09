@@ -9,12 +9,12 @@ test_that("Expressions are returned as functions", {
     print(testDF)
   })
   
-  funcionalized<-function(){
+  functionalized<-function(){
     testDF <- data.frame(x = 1:5, y = runif(5))
     print(testDF)
   }
   
-  expect_equivalent(functionalizeInput(expr),funcionalized)
+  expect_equivalent(functionalizeInput(expr),functionalized)
 
 })
 
@@ -29,7 +29,7 @@ test_that("Expressions containing functions are properly generated", {
     print(testDF)
   })
   
-  funcionalized<-function(){
+  functionalized<-function(){
     set.seed(42)
     generateDF<-function(ncols=1,nrows=1){
       do.call('cbind',lapply(seq(1,ncols),function(x,y){runif(y)},nrows))
@@ -38,21 +38,23 @@ test_that("Expressions containing functions are properly generated", {
     print(testDF)
   }
   
-  expect_equivalent(functionalizeInput(expr),funcionalized)
+  expect_equivalent(functionalizeInput(expr),functionalized)
   
 })
 
 
 test_that("Character vectors read in as path to source and are returned as functions", {
-  funcionalized<-function(){
+  functionalized<-function(){
     testDF <- data.frame(x = 1:5, y = runif(5))
     print(testDF)
   }
-  expect_equivalent(functionalizeInput("test_scripts/sample_script_1.R"),funcionalized)
+  expect_equivalent(
+    deparse(functionalizeInput(here::here("tests","testthat","test_scripts/sample_script_1.R"))),
+    deparse(functionalized))
 })
 
 test_that("Character vectors read in as path source and are returned as functions - complex source", {
-  funcionalized<-function(){
+  functionalized<-function(){
     set.seed(42)
     generateDF<-function(ncols=1,nrows=1){
       do.call('cbind',lapply(seq(1,ncols),function(x,y){runif(y)},nrows))
@@ -60,7 +62,9 @@ test_that("Character vectors read in as path source and are returned as function
     testDF <- generateDF(10,10)
     print(testDF)
   }
-  expect_equivalent(functionalizeInput("test_scripts/sample_script_2.R"),funcionalized)
+  expect_equivalent(
+    deparse(functionalizeInput(here::here("tests","testthat","test_scripts/sample_script_2.R"))),
+    deparse(functionalized))
 })
 
 test_that("Unexpected inputs return errors", {
