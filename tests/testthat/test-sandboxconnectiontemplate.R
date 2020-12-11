@@ -13,5 +13,13 @@ test_that("If host is not 'localhost', localnode is the node ID", {
   sbTemplate<-sandboxConnectionTemplate(host="Alternate.Host")
 
   expect_equal(sbTemplate$host,"Alternate.Host")
-  expect_equal(sbTemplate$localnode,options("Sandbox_masterNode"))
+  expect_equal(sbTemplate$localnode,getLocalNode())
+})
+
+test_that("hostOS can only be 'unix' or 'windows'",{
+  sbtemplate<-sandboxConnectionTemplate()
+  sbtemplate2<-sandboxConnectionTemplate(hostOS = 'windows')
+
+  expect_equal(sbtemplate$hostOS,"unix")
+  expect_equal(sbtemplate2$hostOS,"windows")
 })

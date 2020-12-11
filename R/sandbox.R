@@ -27,27 +27,29 @@ sandbox<-function(x,sbConnection=sandboxConnectionTemplate(),env=parent.frame())
   # capture outputs
   output<-receiveSand(sandboxCon)
 
-  #inform sandbox session to close
-  serialize("complete",sandboxCon)
-
   captureLeakedObjects(output,env)
+  
   return(output)
 }
 
 # #Results to return from sandbox
 
 sandboxSession<-function(sbConnection){
-  # These two lines need to execute soon one after another. The new R session
+  
+
+  # These two lines need to execute soon one after another. 
+  # first an The new R session
   # initializes the socket connection,
   # and waits for the connection. The order matters, which is why
   # the system call is first, prevents locking
-  makeExternalRSession(sbConnection)
-  # con <- make.socket(host, ID)
-  con <- socketConnection(host = sbConnection$host,
+    makeExternalRSession(sbConnection)
+    # con <- make.socket(host, ID)
+    con <- socketConnection(host = sbConnection$host,
                           port = sbConnection$port,
-                          server=TRUE,
+                          server = ifelse(sbConnection$host == 'localhost', TRUE, FALSE),
                           blocking=TRUE,
                           open="a+b")
+    
   return(con)
 }
 

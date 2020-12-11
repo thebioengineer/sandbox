@@ -40,11 +40,17 @@ test_that("object stores outputs in 'outputs' slot", {
 
 test_that("object stores source call in 'source' slot", {
   
-  expr<-function(){inVal<-42;print(inVal)}
+  expr <- function(){ 
+    inVal<-42
+    print(inVal)
+  }
   
   evalOutput<-evaluate::evaluate(expr)
   
   sbo<-sandbox:::newSandboxOutput(evalOutput,new.env())
-  expect_equivalent(sbo$source,expr)
+  expect_equivalent(
+    deparse(sbo$source),
+    deparse(expr)
+  )
   
 })
