@@ -12,24 +12,22 @@
 #'   testval<-22
 #'   print(testval)
 #' })
-sandbox<-function(x,sbConnection=sandboxConnectionTemplate(),env=parent.frame()){
+sandbox<-function(x, sbConnection = sandboxConnectionTemplate(), env = parent.frame()){
 
   # convert input to function to be sent to sandbox session
   toEval<-functionalizeInput(substitute(x))
 
   # generate new R session to run sandboxed code in
-  sandboxCon<-sandboxSession(sbConnection)
+  sandboxCon <- connectSandboxSession(sbConnection)
   on.exit({destroySandbox(sandboxCon)})
-
-  # run new code
-  sendSand(toEval,sandboxCon)
-
-  # capture outputs
-  output<-receiveSand(sandboxCon)
+  
+  # run sandbox & capture outputs
+  output<-createSandbox(sandboxCon, toEval)
 
   captureLeakedObjects(output,env)
   
   return(output)
+  
 }
 
 # #Results to return from sandbox
@@ -53,7 +51,7 @@ sandboxSession<-function(sbConnection){
   return(con)
 }
 
-destroySandbox<-function(sandboxCon){
+destroySandbox.websocket<-function(sandboxCon){
     serialize("complete",sandboxCon)
     close.connection(sandboxCon)
 }

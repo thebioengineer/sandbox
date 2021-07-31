@@ -1,7 +1,7 @@
 Package: sandbox
 Type: Package
 Title: Execute R Code in a Separate R Session
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
     person("Ellis", "Hughes", , "ellishughes@live.com", c("aut", "cre")))
 Description:

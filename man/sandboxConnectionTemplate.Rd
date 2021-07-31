@@ -8,7 +8,8 @@ sandboxConnectionTemplate(
   host = "localhost",
   port,
   username = "",
-  hostOS = c("unix", "windows")
+  hostOS = c("unix", "windows"),
+  method = c("ssh", "websocket")
 )
 }
 \arguments{
@@ -18,7 +19,7 @@ sandboxConnectionTemplate(
 
 \item{username}{external servers username}
 
-\item{hostOS}{the OS of the external host, unix or windows?}
+\item{hostOS}{what is the hosts OS? (unix vs windows)}
 }
 \description{
 Contains template information for connection to external server
