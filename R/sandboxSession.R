@@ -1,24 +1,30 @@
-connectSandboxSession <- function(sbConnection){
-  switch(
-    sbConnection[["connectionType"]],
-    websocket = connectSandboxSession.websocket(sbConnection),
-    ssh = connectSandboxSession.ssh(sbConnection),
-  )
+connectSandboxSession <- function(sbConnection,...){
+  if(!isTRUE(sbConnection[["connected"]])){
+    connectFunc <- switch(
+      sbConnection[["connectionType"]],
+      websocket = connectSandboxSession.websocket,
+      ssh = connectSandboxSession.ssh,
+    )
+    connectFunc(sbConnection,...)
+  }else{
+   sbConnection 
+  }
 }
 
-destroySandbox<-function(sbConnection){
+destroySandbox<-function(sbConnection,...){
   if(sbConnection[["connected"]]){
-    switch(
+    destroyFunc <- switch(
       sbConnection[["connectionType"]],
-      websocket = destroySandbox.websocket(sbConnection),
-      ssh = destroySandbox.ssh(sbConnection),
+      websocket = destroySandbox.websocket,
+      ssh = destroySandbox.ssh,
     )
+    destroyFunc(sbConnection,...)
   }else{
     warning("sandbox Connection not connected")
   }
 }
 
-connectSandboxSession.websocket<-function(sbConnection){
+connectSandboxSession.websocket<-function(sbConnection,...){
   # These two lines need to execute soon one after another. 
   # first an The new R session
   # initializes the socket connection,
@@ -37,12 +43,12 @@ connectSandboxSession.websocket<-function(sbConnection){
   return(sbConnection)
 }
 
-destroySandbox.websocket<-function(sandboxCon){
+destroySandbox.websocket<-function(sbConnection,...){
   serialize("complete",sbConnection[["session"]])
   close.connection(sbConnection[["session"]])
 }
 
-connectSandboxSession.ssh <- function(sbConnection){
+connectSandboxSession.ssh <- function(sbConnection,...){
  session <- ssh_connect(paste0(sbConnection$username,"@",sbConnection$host))
  sbConnection[["session"]] <- session
  sbConnection[["connected"]] <- TRUE

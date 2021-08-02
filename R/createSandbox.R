@@ -5,19 +5,19 @@ createSandbox <- function(connection, toEval, ...){
     ssh = createSandbox.ssh
   )
   
-  func(connection, toEval)
+  func(connection, toEval, ...)
 }
 
-createSandbox.websocket <- function(connection, toEval){
+createSandbox.websocket <- function(connection, toEval, ...){
   # run new code
-  sendSand(toEval,connection)
+  sendSand(toEval,connection[["session"]])
   
   # capture outputs
-  receiveSand(connection)
+  receiveSand(connection[["session"]])
   
 }
 
-createSandbox.ssh <- function(connection, toEval){
+createSandbox.ssh <- function(connection, toEval, ...){
   
   remote_installed_packages <- ssh_installed_packages(connection[["session"]],c("sandbox"))
   

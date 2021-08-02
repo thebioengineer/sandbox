@@ -37,7 +37,6 @@ castSand<-function(mold){
 #' @param mold string version of the serialized function to evaluate
 #' @export
 castSand_serial<-function(mold){
-  saveRDS(mold,"f:/Documents/Projects/sandbox.rds")
   toEval <- dexpressionize(mold)
   results<-evaluate(toEval, output_handler = sandbox_handler(), stop_on_error = 1)
   sbOutput <- newSandboxOutput(results,leakEnv)
