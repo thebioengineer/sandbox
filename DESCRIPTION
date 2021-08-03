@@ -1,14 +1,16 @@
 Package: sandbox
 Type: Package
 Title: Execute R Code in a Separate R Session
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
     person("Ellis", "Hughes", , "ellishughes@live.com", c("aut", "cre")))
 Description:
-  Run your R code in another "sandbox" R environment and capture the outputs. You can also 'leak' objects that were generated in your sandbox environment to the current environment. Currently the sandbox environment is limited to your local machine, but the idea is to add the ability to send it to a cluster.
+  Run your R code in another "sandbox" R environment and capture the outputs. 
+  The sandbox can be located locally or in a remote setting.
+  You can also 'leak' objects that were generated in your sandbox environment 
+  to the current environment. 
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.1.1
 Suggests: 
     testthat,
@@ -18,4 +20,5 @@ Suggests:
     here
 Imports: 
     evaluate,
-    ssh
+    ssh,
+    jsonlite

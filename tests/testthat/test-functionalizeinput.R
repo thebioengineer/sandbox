@@ -48,12 +48,22 @@ test_that("Character vectors read in as path to source and are returned as funct
     testDF <- data.frame(x = 1:5, y = runif(5))
     print(testDF)
   }
+  
+  test_temp_file <- tempfile(fileext = ".r")
+  
+  writeLines(c(
+    "testDF <- data.frame(x = 1:5, y = runif(5))",
+    "print(testDF)"),
+    test_temp_file
+  )
+  
   expect_equivalent(
-    deparse(functionalizeInput(here::here("tests","testthat","test_scripts/sample_script_1.R"))),
+    deparse(functionalizeInput(test_temp_file)),
     deparse(functionalized))
 })
 
 test_that("Character vectors read in as path source and are returned as functions - complex source", {
+  
   functionalized<-function(){
     set.seed(42)
     generateDF<-function(ncols=1,nrows=1){
@@ -62,9 +72,24 @@ test_that("Character vectors read in as path source and are returned as function
     testDF <- generateDF(10,10)
     print(testDF)
   }
+  
+  test_temp_file <- tempfile(fileext = ".r")
+  
+  writeLines(c(
+    "set.seed(42)",
+    "generateDF<-function(ncols=1,nrows=1){",
+    "  do.call('cbind',lapply(seq(1,ncols),function(x,y){runif(y)},nrows))",
+    "}",
+    "testDF <- generateDF(10,10)",
+    "print(testDF)"),
+    test_temp_file
+  )
+  
+  
   expect_equivalent(
-    deparse(functionalizeInput(here::here("tests","testthat","test_scripts/sample_script_2.R"))),
-    deparse(functionalized))
+    deparse(functionalizeInput(test_temp_file)),
+    deparse(functionalized)
+    )
 })
 
 test_that("Unexpected inputs return errors", {
@@ -75,3 +100,4 @@ test_that("Unexpected inputs return errors", {
   expect_error(functionalizeInput(list(a="ListTime")),
                "No Sandboxing Method for inputs of class <list>.")
 })
+

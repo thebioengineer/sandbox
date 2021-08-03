@@ -18,19 +18,31 @@ makeSandbox.local<-function(node,ID){
 
 makeSandbox.external<-function(node,ID){
   socketCon<-socketConnection(host = node, port = ID, blocking = TRUE,
-                              open = "a+b", timeout = 60 * 60 * 24 * 30,
-                              server = TRUE)
+                              open = "a+b", timeout = 60 * 60 * 24 * 30 )
   return(socketCon)
 }
 
 
 #' Evaluate code from original R Session
-#' @import evaluate
+#' @importFrom evaluate evaluate
 #' @param mold code supplied to sandbox R session to evaluate, contained in a function call
+#' @export
 castSand<-function(mold){
   results<-evaluate(mold, output_handler = sandbox_handler(), stop_on_error = 1)
   newSandboxOutput(results,leakEnv)
 }
+
+#' Evaluate code from a serialized function
+#' @importFrom evaluate evaluate
+#' @param mold string version of the serialized function to evaluate
+#' @export
+castSand_serial<-function(mold){
+  toEval <- dexpressionize(mold)
+  results<-evaluate(toEval, output_handler = sandbox_handler(), stop_on_error = 1)
+  sbOutput <- newSandboxOutput(results,leakEnv)
+  cat(expressionize(sbOutput))
+}
+
 
 #' Return outputs to original R Session - wrapper for sendSand
 #' @param sandboxCon socket connection to original R session
