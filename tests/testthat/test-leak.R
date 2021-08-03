@@ -31,11 +31,11 @@ test_that("objects are returned from sandbox environment", {
   }
 
   # generate new R session to run sandboxed code in
-  sandboxCon<-sandbox:::sandboxSession(sandboxConnectionTemplate())
+  sandboxCon<-sandbox:::connectSandboxSession(sandboxConnectionTemplate())
   on.exit({sandbox:::destroySandbox(sandboxCon)})
-  sandbox:::sendSand(wrapper3,sandboxCon)
-  output<-sandbox:::receiveSand(sandboxCon)
-  serialize("complete",sandboxCon)
+  sandbox:::sendSand(wrapper3,sandboxCon[['session']])
+  output<-sandbox:::receiveSand(sandboxCon[['session']])
+  serialize("complete",sandboxCon[['session']])
 
   testthat::expect_equal(ls(output[['leak']]),"testVal1") #object should not exist
 })

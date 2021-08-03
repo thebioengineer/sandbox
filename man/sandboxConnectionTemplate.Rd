@@ -9,7 +9,7 @@ sandboxConnectionTemplate(
   port,
   username = "",
   hostOS = c("unix", "windows"),
-  method = c("ssh", "websocket")
+  method = c("websocket", "ssh")
 )
 }
 \arguments{
