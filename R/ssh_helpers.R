@@ -24,16 +24,18 @@ ssh_sandbox_exec <- function(session, expression, rscript_exe = "RScript") {
   dexpressionize(std_out(res))
 }
 
+#' @importFrom jsonlite base64_enc
 expressionize <- function(x){
-  char_x <- gsub("\n","\\\\n",jsonlite::base64_enc(serialize(x,connection = NULL)))
+  char_x <- gsub("\n","\\\\n",base64_enc(serialize(x,connection = NULL)))
   char_x <- gsub("\\","%%",char_x, fixed = TRUE)
   scan(text = char_x, what = "character", allowEscapes = FALSE,quiet = TRUE,encoding = "utf8")
 }
 
+#' @importFrom jsonlite base64_dec
 dexpressionize <- function(x){
   char_x <-scan(text = paste(x,collapse = ""), what = "character", allowEscapes = TRUE,quiet = TRUE)
   char_x <- gsub("%%","\\",char_x, fixed = TRUE)
-  unserialize(jsonlite::base64_dec(gsub("\\n","\n",char_x, fixed=TRUE)))
+  unserialize(base64_dec(gsub("\\n","\n",char_x, fixed=TRUE)))
 }
 
 

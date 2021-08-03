@@ -4,6 +4,7 @@
 #' @param port port of the connection
 #' @param username external servers username
 #' @param hostOS what is the hosts OS? (unix vs windows)
+#' @param method connection method - websocket for internal, ssh for external
 #'  
 #' @export
 sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS=c("unix","windows"), method = c("websocket","ssh")){

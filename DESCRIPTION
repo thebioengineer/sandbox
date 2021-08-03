@@ -20,4 +20,5 @@ Suggests:
     here
 Imports: 
     evaluate,
-    ssh
+    ssh,
+    jsonlite

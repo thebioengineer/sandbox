@@ -20,6 +20,8 @@ sandboxConnectionTemplate(
 \item{username}{external servers username}
 
 \item{hostOS}{what is the hosts OS? (unix vs windows)}
+
+\item{method}{connection method - websocket for internal, ssh for external}
 }
 \description{
 Contains template information for connection to external server
