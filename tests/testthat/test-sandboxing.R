@@ -60,18 +60,18 @@ test_that("sandbox session will only close if 'complete' is sent", {
   }
   
   # generate new R session to run sandboxed code in
-  sandboxCon<-sandbox:::sandboxSession(sandboxConnectionTemplate())
+  sandboxCon<-sandbox:::connectSandboxSession(sandboxConnectionTemplate())
   on.exit({sandbox:::destroySandbox(sandboxCon)}) #ensure session closes
-  sandbox:::sendSand(wrapper3,sandboxCon)
-  output<-sandbox:::receiveSand(sandboxCon)
+  sandbox:::sendSand(wrapper3,sandboxCon[['session']])
+  output<-sandbox:::receiveSand(sandboxCon[['session']])
   
   #sending a message that is not complete will return it
-  serialize("return this message",sandboxCon)
-  returnedMessage<-unserialize(sandboxCon)
+  serialize("return this message",sandboxCon[['session']])
+  returnedMessage<-unserialize(sandboxCon[['session']])
   
   #sending the "complete" message closes the rsession
-  serialize("complete",sandboxCon)
-  returnedMessage2<-try(unserialize(sandboxCon),silent = TRUE)
+  serialize("complete",sandboxCon[['session']])
+  returnedMessage2<-try(unserialize(sandboxCon[['session']]),silent = TRUE)
 
   #message returned if not "complete"
   testthat::expect_equal(returnedMessage,"return this message") 
@@ -117,11 +117,11 @@ test_that("sandbox session will persist for a short period of time", {
   #able to connect even after a small delay
   testthat::expect_equal(class(con),c("sockconn","connection")) 
 
-  sandboxCon<-sandbox:::sandboxSession(sbTemplate)
+  sandboxCon<-sandbox:::connectSandboxSession(sbTemplate)
   on.exit({sandbox:::destroySandbox(sandboxCon)}) #ensure session closes
-  sandbox:::sendSand(wrapper3,sandboxCon)
-  output<-sandbox:::receiveSand(sandboxCon)
-  serialize("complete",sandboxCon)
+  sandbox:::sendSand(wrapper3,sandboxCon[['session']])
+  output<-sandbox:::receiveSand(sandboxCon[['session']])
+  serialize("complete",sandboxCon[['session']])
   
 })
 

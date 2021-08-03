@@ -4,9 +4,11 @@
 #' @param port port of the connection
 #' @param username external servers username
 #' @param hostOS what is the hosts OS? (unix vs windows)
+#' @param method connection method - websocket for internal, ssh for external
 #'  
 #' @export
-sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS=c("unix","windows")){
+sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS=c("unix","windows"), method = c("websocket","ssh")){
+  
   if( host=="localhost" || host == getLocalNode() ){
     localnode<-"localhost"
     host<- "localhost"
@@ -21,23 +23,35 @@ sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS=c("
       port<-22
     }
   }
+  
   hostOS<-match.arg(hostOS)
-  newSandboxConnectionTemplate(host,username,port,localnode,hostOS)
+  
+  newSandboxConnectionTemplate(
+    host = host, 
+    username = username,
+    port = port,
+    localnode = localnode,
+    hostOS = hostOS,
+    connectionType = match.arg(method)
+    )
 }
 
 
-newSandboxConnectionTemplate<-function(host,username,port,localnode,hostOS){
+newSandboxConnectionTemplate<-function(host,username,port,localnode,hostOS,session = NULL, connected = FALSE, connectionType = NULL){
   structure(
     list(host=host, #return only results/error
          username=username,
          port=port,
          localnode=localnode,
-         hostOS=hostOS),
+         hostOS=hostOS, 
+         session = session,
+         connected = connected, 
+         connectionType = connectionType
+    ),
     class = "sandboxConnection")
 }
 
 getLocalNode<-function(){
   Sys.info()[['nodename']]
 }
-
 
