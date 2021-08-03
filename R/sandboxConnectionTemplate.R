@@ -6,7 +6,7 @@
 #' @param hostOS what is the hosts OS? (unix vs windows)
 #'  
 #' @export
-sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS=c("unix","windows"), method = c("ssh","websocket")){
+sandboxConnectionTemplate<-function(host="localhost",port,username="",hostOS=c("unix","windows"), method = c("websocket","ssh")){
   
   if( host=="localhost" || host == getLocalNode() ){
     localnode<-"localhost"
@@ -53,5 +53,4 @@ newSandboxConnectionTemplate<-function(host,username,port,localnode,hostOS,sessi
 getLocalNode<-function(){
   Sys.info()[['nodename']]
 }
-
 
