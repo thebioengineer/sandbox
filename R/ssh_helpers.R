@@ -40,21 +40,38 @@ dexpressionize <- function(x){
 
 
 
-ssh_install_sandbox <- function(session,ref = NULL, force = FALSE){
+ssh_install_package_cran <- function(session, package, cran_mirror = "https://cran.rstudio.com/"){
   
   ssh_rscript_exec(
     session,
-    shQuote(paste0(
-      paste0("sandbox <- inherits(try(find.package(\"sandbox\")),\"try-error\") | ", force,";"),
-      "remotes <- inherits(try(find.package(\"remotes\")),\"try-error\");",
-      "rv <- R.version;",
-      "rdate <- paste0(rv$year,'-',rv$month,'-',rv$day);",
-      "};",
-      "if(sandbox){",
-      paste0("remotes::install_github('thebioengineer/sandbox",ifelse(!is.null(ref),paste0("@",ref),""),"')"),
-      "};"
-    )))
+    paste0("install.packages(c(",paste("'",package,"'",collapse=","),"). , repos='",cran_mirror,"')")
+    )
 }
+
+ssh_install_package_remote <- function(session, package){
+  
+  ssh_rscript_exec(
+    session,
+    paste0("remotes::install_github('",package,"')")
+    )
+}
+
+ssh_install_sandbox <- function(session, ref){
+  if(!ssh_installed_packages(session,"remotes")){
+    ssh_install_package_cran(session,"remotes")
+  }
+  sandbox_ref <- "thebioengineer/sandbox"
+  
+  if(missing(ref)){
+    ref <- packageDescription("sandbox")$GithubRef
+  }
+  
+  if(!is.null(ref)){
+    sandbox_ref <- paste0(sandbox_ref,"@",ref)
+  }
+  ssh_install_package_remote(session, sandbox_ref)
+}
+
 
 ssh_installed_packages <- function(session, packages){
   
@@ -69,10 +86,30 @@ ssh_installed_packages <- function(session, packages){
   
   remote_installed_packages <- unlist(strsplit(std_out(res),"\\s+"))
   
+  package_list <- packages %in% remote_installed_packages
   
+  names(package_list) <- packages
   
-  list(
-    remote_installed = remote_installed_packages,
-    remote_missing = setdiff(packages, remote_installed_packages)
-  )
+  package_list
+
 }
+
+ssh_installed_package_version <- function(session, packages){
+  
+  res <- ssh_rscript_exec(
+    session,
+    paste0(
+      "pkg_list <- c(",paste0("'", packages, "'", collapse = ","),");",
+      "p_installed <- do.call('c',lapply(pkg_list, function(p){tryCatch(as.character(packageVersion(p)),error = function(e){NA})}));",
+      "cat(p_installed)"
+    )
+  )
+  
+  remote_installed_package_version <- unlist(strsplit(std_out(res),"\\s+"))
+
+  names(remote_installed_package_version) <- packages
+  
+  remote_installed_package_version
+  
+}
+
