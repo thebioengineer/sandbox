@@ -17,16 +17,15 @@ createSandbox.websocket <- function(connection, toEval, ...){
   
 }
 
-createSandbox.ssh <- function(connection, toEval, ...){
+createSandbox.ssh <- function(connection, toEval, ..., update = TRUE){
   
-  remote_installed_packages <- ssh_installed_packages(connection[["session"]],c("sandbox"))
+  sb_not_installed_ssh <- !ssh_installed_packages(connection[["session"]],"sandbox")
+  sb_old_ssh <- ssh_installed_package_version(connection[["session"]],"sandbox") < packageVersion("sandbox")
   
-  if("sandbox" %in% remote_installed_packages$remote_missing){
+  ## If sandbox is not installed or is an old version, update
+  if(sb_not_installed_ssh | (sb_old_ssh & update)){
     ssh_install_sandbox(connection[["session"]])
   }
   
   ssh_sandbox_exec(connection[["session"]],toEval)
-  
-  
-  
 }
